@@ -29,4 +29,14 @@
 
     </ul>
 
+
+
+<div>博客分类
+    {% for name in names %}
+    <a>{{ name }}</a>
+    {% empty %}
+   <p>暂无分类，敬请期待</p>
+    {% endfor %}
+ </div>
+
 {% endblock %}

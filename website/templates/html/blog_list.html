@@ -1,4 +1,6 @@
 {% extends 'index.html' %}
+
+
 {% block content %}
 {% block title %}{{ '我的个人博客' }}{% endblock %}
 
@@ -21,8 +23,39 @@
 
     </ul>
 
-    <div>博客分类
-        <a>{{ typeNames }}</a>
+    {% if blogs.number != 1  %}
+    <a href="?page=1">1</a>
+    {% endif %}
 
-    </div>
+    {% if blogs.has_previous %}
+    <a href="?page={{ blogs.previous_page_number }}"> << </a>
+    {% endif %}
+
+
+    <a href="?page={{ blogs.number }}"> {{ blogs.number }}  </a>
+
+
+    {% if blogs.has_next %}
+    <a href="?page={{ blogs.next_page_number }}"> >> </a>
+    {% endif %}
+    <a>共 {{ blogs.paginator.num_pages }} 页</a>
+
+
+
+
+<div>博客分类
+    {% for name in names %}
+    <a>{{ name }}</a>
+    {% empty %}
+   <p>暂无分类，敬请期待</p>
+    {% endfor %}
+ </div>
+
 {% endblock %}
+
+
+
+
+
+
+
