@@ -1,0 +1,28 @@
+{% extends 'index.html' %}
+{% block content %}
+{% block title %}{{ '我的个人博客' }}{% endblock %}
+
+    <div>
+        共 {{ blogs|length }} 篇博客
+    </div>
+    <ul>
+
+            {% for blog in blogs %}
+            <li>
+                <a>{{ blog.blog_createdTime | date:"Y-m-d " }}</a>
+                <a href="{% url 'blog_detail' blog.id %}">{{ blog.blogTitle }}</a>
+                <a href="{% url 'blog_type' blog.blogType.id %}">{{ blog.blogType }}</a>
+                <a>{{ blog.blogContent | truncatechars:30 }}</a>
+            </li>
+
+            {% empty %}
+               <p>暂无博客，敬请期待</p>
+            {% endfor %}
+
+    </ul>
+
+    <div>博客分类
+        <a>{{ typeNames }}</a>
+
+    </div>
+{% endblock %}

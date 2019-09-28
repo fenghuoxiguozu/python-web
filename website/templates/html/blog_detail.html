@@ -1,0 +1,17 @@
+{% extends 'index.html' %}
+{% block title %}{{ blog.blogTitle }}{% endblock %}
+
+{% block content %}
+
+    <div>
+
+        <a href="{% url 'blog_list' %}"> < </a>
+    </div>
+
+    <div>
+        {{ blog.blogTitle }}
+        {{ blog.blogContent }}
+
+    </div>
+
+{% endblock %}
