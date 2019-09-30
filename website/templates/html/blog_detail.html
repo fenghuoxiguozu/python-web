@@ -14,16 +14,31 @@
 
     </div>
 
+<p >上一篇:
+    {% if pre_blog %}
+    <a href="{% url "blog_detail" pre_blog.id  %}">{{ pre_blog.blogTitle }}</a>
+    {% else %}
+        已经是最之前的博客
+    {% endif %}
+
+</p>
+
+<p >下一篇:
+    {% if next_blog %}
+    <a href="{% url "blog_detail" next_blog.id  %}">{{ next_blog.blogTitle }}</a>
+    {% else %}
+        已经是最新的博客
+    {% endif %}
+</p>
 
 
-
-<div>博客分类
-    {% for name in names %}
-    <a>{{ name }}</a>
-    {% empty %}
-   <p>暂无分类，敬请期待</p>
-    {% endfor %}
- </div>
+{#<div>博客分类#}
+{#    {% for name in names %}#}
+{#    <a>{{ name }}</a>#}
+{#    {% empty %}#}
+{#   <p>暂无分类，敬请期待</p>#}
+{#    {% endfor %}#}
+{# </div>#}
 
 
 {% endblock %}

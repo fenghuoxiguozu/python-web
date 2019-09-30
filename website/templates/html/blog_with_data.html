@@ -2,24 +2,24 @@
 
 
 {% block content %}
-{% block title %}我的个人博客{% endblock %}
+{% block title %}{{ '我的个人博客' }}{% endblock %}
 
     <div>
-        共 {{ Blogs|length }} 篇博客
+        共 {{ blogs_with_dates|length }} 篇博客
     </div>
     <ul>
 
-        {% for blog in Blogs %}
-        <li>
-            <a>{{ blog.blog_createdTime | date:"Y-m-d " }}</a>
-            <a href="{% url 'blog_detail' blog.id %}">{{ blog.blogTitle }}</a>
-            <a href="{% url 'blog_with_type' blog.blogType.id %}">{{ blog.blogType }}</a>
-            <a>{{ blog.blogContent | truncatechars:30 }}</a>
-        </li>
+            {% for blog in blogs_with_dates %}
+            <li>
+                <a>{{ blog.blog_createdTime | date:"Y-m-d " }}</a>
+                <a href="{% url 'blog_detail' blog.id %}">{{ blog.blogTitle }}</a>
+                <a href="{% url 'blog_with_type' blog.blogType.id %}">{{ blog.blogType }}</a>
+                <a>{{ blog.blogContent | truncatechars:30 }}</a>
+            </li>
 
-        {% empty %}
-           <p>暂无博客，敬请期待</p>
-        {% endfor %}
+            {% empty %}
+               <p>暂无博客，敬请期待</p>
+            {% endfor %}
 
     </ul>
 
@@ -32,7 +32,7 @@
 
     <div>日期分类
     {% for date in right_Dates %}
-       <a href="{% url 'blog_with_date' date.year date.month %}">{{ date | date:"Y年m月"}}</a>
+       <a>{{ date | date:"Y年m月"}}</a>
     {% endfor %}
     </div>
 
@@ -54,14 +54,5 @@
     {% endif %}
     <a>共 {{ pageBlogs.paginator.num_pages }} 页</a>
 
-
-
-
 {% endblock %}
-
-
-
-
-
-
 

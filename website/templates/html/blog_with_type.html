@@ -1,30 +1,37 @@
 {% extends 'index.html' %}
-
+{% block title %}{{ blog_type }}{% endblock %}
 
 {% block content %}
-{% block title %}我的个人博客{% endblock %}
 
-    <div>
-        共 {{ Blogs|length }} 篇博客
+<div>
+        <a href="{% url 'blog_list' %}"> < </a>
     </div>
-    <ul>
 
-        {% for blog in Blogs %}
-        <li>
-            <a>{{ blog.blog_createdTime | date:"Y-m-d " }}</a>
-            <a href="{% url 'blog_detail' blog.id %}">{{ blog.blogTitle }}</a>
-            <a href="{% url 'blog_with_type' blog.blogType.id %}">{{ blog.blogType }}</a>
-            <a>{{ blog.blogContent | truncatechars:30 }}</a>
-        </li>
+{#<div>分类：{{ blog_type.blogType }}</div>#}
 
-        {% empty %}
-           <p>暂无博客，敬请期待</p>
-        {% endfor %}
+<ul>
+
+    {% for blog in blogs %}
+
+    <li>
+
+        <a>标题：{{ blog.blogTitle }}</a>
+        <a>分类：{{ blog.blogType }}</a>
+        <a>创作时间：{{ blog.blog_createdTime | date:"Y-m-d " }}</a>
+        <a href="{% url 'blog_detail' blog.id %}">{{ blog.blogTitle }}</a>
+{#        <a ></a>#}
+        <a>{{ blog.blogContent | truncatechars:30 }}</a>
+    </li>
+
+    {% empty %}
+       <p>暂无博客，敬请期待</p>
+    {% endfor %}
 
     </ul>
 
 
-    <div>博客分类
+
+<div>博客分类
     {% for name in right_typeNames %}
        <a href="{% url 'blog_with_type' name.id %}">{{ name.typeName }} ({{ name.typeCount }})</a>
     {% endfor %}
@@ -32,9 +39,10 @@
 
     <div>日期分类
     {% for date in right_Dates %}
-       <a href="{% url 'blog_with_date' date.year date.month %}">{{ date | date:"Y年m月"}}</a>
+       <a>{{ date | date:"Y年m月"}}</a>
     {% endfor %}
     </div>
+
 
 
     {% if pageBlogs.number != 1  %}
@@ -54,14 +62,4 @@
     {% endif %}
     <a>共 {{ pageBlogs.paginator.num_pages }} 页</a>
 
-
-
-
 {% endblock %}
-
-
-
-
-
-
-

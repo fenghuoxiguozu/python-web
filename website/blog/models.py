@@ -20,3 +20,6 @@ class Blog(models.Model):
     def __str__(self):
         return "<Blog:%s>"%self.blogTitle
 
+    class Meta:
+        ordering=['-blog_createdTime']
+
