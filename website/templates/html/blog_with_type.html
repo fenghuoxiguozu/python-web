@@ -38,8 +38,8 @@
     </div>
 
     <div>日期分类
-    {% for date in right_Dates %}
-       <a>{{ date | date:"Y年m月"}}</a>
+    {% for date,count in blog_dates.items %}
+       <a href="{% url 'blog_with_date' date.year date.month %}">{{ date | date:"Y年m月"}} ({{ count }})</a>
     {% endfor %}
     </div>
 

@@ -8,10 +8,14 @@ def sidebar(request):
     context = {}
     # 博客类型分类
     context['right_typeNames'] = BlogType.objects.annotate(typeCount=Count('blog'))
-    # context['right_typeNames'] = BlogType.objects.all()
-    # context['TypeNums']=BlogType.objects.annotate(typeCount=Count('blog'))
     # 博客按月份分类
-    context['right_Dates'] = Blog.objects.dates('blog_createdTime','month',order='DESC')
+    _Month= Blog.objects.dates('blog_createdTime','month',order='DESC')# 返回时间QuerySet
+    blog_date_dict={}
+    for blog_date in _Month:
+        blog_count=Blog.objects.filter(blog_createdTime__year=blog_date.year,
+                                 blog_createdTime__month=blog_date.month).count()
+        blog_date_dict[blog_date]=blog_count
+    context['blog_dates']=blog_date_dict
     return context
 
 
@@ -51,11 +55,23 @@ def blog_with_date(request,year,month):
 
 # 博客详情页
 def blog_detail(request,blog_id):
-    context = {}
     blog=get_object_or_404(Blog,id=blog_id)
+
+    if not request.COOKIES.get('blog_%s_read'%blog_id):
+        if readNum.objects.filter(blogName=blog).count():
+            readnum=readNum.objects.get(blogName=blog)
+        else:
+            readnum=readNum(blogName=blog)
+        readnum.read_num += 1
+        readnum.save()
+
+
+    context = {}
     context['blog']=blog
     context['names'] = BlogType.objects.all()
     # 上下篇博客筛选
     context['pre_blog']= Blog.objects.filter(blog_createdTime__lt=blog.blog_createdTime).first()
     context['next_blog'] = Blog.objects.filter(blog_createdTime__gt=blog.blog_createdTime).last()
-    return render_to_response('blog_detail.html', context)
+    response= render_to_response('blog_detail.html', context)
+    response.set_cookie('blog_%s_read'%blog_id,'true')
+    return response

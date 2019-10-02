@@ -3,16 +3,36 @@
 
 {% block content %}
 
-    <div>
 
-        <a href="{% url 'blog_list' %}"> < </a>
-    </div>
 
-    <div>
-        {{ blog.blogTitle }}
-        {{ blog.blogContent }}
+<div class="contain">
+        <div class="row">
+            <div class="col-md-7 col-md-offset-1">
+                <div>
+                    <ol class="breadcrumb">
+                      <li><a href="{% url 'blog_list' %}">Home</a></li>
+                {#      <li><a href="#">Library</a></li>#}
+                      <li class="active">{{ blog.blogTitle }}</li>
+                    </ol>
+                </div>
+                <div>
+                    {{ blog.blogTitle }}
+                    {{ blog.blogContent }}
+                    <span>阅读数：{{ blog.get_read_num }}</span>
 
-    </div>
+                </div>
+            </div>
+
+            <div class="col-md-2">
+
+            </div>
+        </div>
+</div>
+
+{#    <div>#}
+{#        #}
+{##}
+{#    </div>#}
 
 <p >上一篇:
     {% if pre_blog %}

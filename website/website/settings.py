@@ -38,6 +38,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'blog',
+    'ckeditor',
+    'ckeditor_uploader'
 ]
 
 MIDDLEWARE = [
@@ -55,7 +57,7 @@ ROOT_URLCONF = 'website.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [ os.path.join(BASE_DIR,'templates','html')],
+        'DIRS': [ os.path.join(BASE_DIR,'templates','html'),],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -120,3 +122,36 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
 
 STATIC_URL = '/static/'
+STATICFILES_DIRS = [os.path.join(BASE_DIR,'static'),]
+
+
+# meida
+MEDIA_URL='/media/'
+MEDIA_ROOT=os.path.join(BASE_DIR,'meida')
+
+# 配置ckeditor
+CKEDITOR_UPLOAD_PATH='upload/'
+
+EACH_PAGE_BLOGS_NUMBER=7
+
+CKEDITOR_CONFIGS={
+    'default':{},
+    'comment_ckeditor':{
+        # 使用简体中文
+        'language':'zh-cn',
+        # 编辑器的宽高请根据你的页面自行设置
+        'width':'1000px',
+        'height':'150px',
+        'image_previewText':' ',
+        'tabSpaces': 4,
+        'toolbar': 'Custom',
+        # 添加按钮在这里
+        'toolbar_Custom': [
+            ['Bold', 'Italic', 'Underline', 'Format', 'RemoveFormat'],
+            ['NumberedList', 'BulletedList'],
+            ['Blockquote', 'CodeSnippet'],
+            ['Image', 'Link', 'Unlink'],
+            ['Maximize']
+        ],
+    }
+}
