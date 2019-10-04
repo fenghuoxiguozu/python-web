@@ -37,9 +37,11 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'blog',
     'ckeditor',
-    'ckeditor_uploader'
+    'ckeditor_uploader',
+    'blog',
+    'read_record',
+    'comment',
 ]
 
 MIDDLEWARE = [
@@ -127,7 +129,7 @@ STATICFILES_DIRS = [os.path.join(BASE_DIR,'static'),]
 
 # meida
 MEDIA_URL='/media/'
-MEDIA_ROOT=os.path.join(BASE_DIR,'meida')
+MEDIA_ROOT=os.path.join(BASE_DIR,'media')
 
 # 配置ckeditor
 CKEDITOR_UPLOAD_PATH='upload/'

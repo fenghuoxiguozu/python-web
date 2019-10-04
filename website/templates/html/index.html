@@ -4,44 +4,44 @@
 <head>
     <meta charset="UTF-8">
     <title>{% block title %}{% endblock %}</title>
-    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/semantic.css' %}">
     <script src="{% static 'js/jquery-3.2.1.min.js' %}"></script>
-    <script src="{% static 'js/bootstrap.js' %}"></script>
+    <script src="{% static 'js/semantic.js' %}"></script>
 </head>
 
 <body>
-    <nav class="navbar navbar-default">
-      <div class="container-fluid">
-        <!-- Brand and toggle get grouped for better mobile display -->
-        <div class="navbar-header">
-          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-          <a class="navbar-brand" href="#">我的个人博客</a>
+
+<div class="ui menu">
+    <div class="header item">烽火戏国足</div>
+    <a class="active item">链接</a>
+
+
+    <div class="right menu">
+        <div class="item">
+        {% if user.is_authenticated %}
+            <h5>{{ user }},你好</h5>
+        {% else %}
+            <h5>
+                <a href="{% url 'login' %}?from={{ request.get_full_path }}">登录</a>
+            </h5>
+        {% endif %}
         </div>
-
-        <!-- Collect the nav links, forms, and other content for toggling -->
-        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-
-          <form class="navbar-form navbar-left">
-            <div class="form-group">
-              <input type="text" class="form-control" placeholder="Search">
+        <div class="item">
+            <div class="ui action left icon input">
+                <i class="search icon"></i>
+                <input type="text" placeholder="搜索">
+                <button class="ui button">提交</button>
             </div>
-            <button type="submit" class="btn btn-default">Submit</button>
-          </form>
-          <ul class="nav navbar-nav navbar-right">
-            <li><a href="#">Sign in</a></li>
-            <li><a href="#">Sign up</a></li>
-
-          </ul>
-        </div><!-- /.navbar-collapse -->
-      </div><!-- /.container-fluid -->
-    </nav>
+        </div>
+{#    #}
+    </div>
+</div>
 
 
+ <div class="ui hidden divider"></div>
+ <div class="ui hidden divider"></div>
+ <div class="ui hidden divider"></div>
+ <div class="ui hidden divider"></div>
 
 
 {% block content %}{% endblock %}

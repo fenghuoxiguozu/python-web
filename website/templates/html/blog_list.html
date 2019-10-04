@@ -4,79 +4,67 @@
 {% block content %}
 {#{% block title %}我的个人博客{% endblock %}#}
 
-    <div class="contain">
-        <div class="row">
-            <div class="col-md-7 col-md-offset-1">
-                <div class="panel panel-info">
-                    共 {{ Blogs|length }} 篇博客
-                </div>
-
-                    {% for blog in pageBlogs %}
-                <div class="media">
-                    <div class="media position-relative">
-                        <a>
-                            <img src="..." alt="...">
-                        </a>
+<div class="ui equal width grid">
+    <div class="two wide column">
+    </div>
+    <div class="nine wide column">
+        <div class="ui segment">
+            <div class="ui top attached label">共 {{ Blogs|length }} 篇博客</div>
+                {% for blog in pageBlogs %}
+            <div class="ui divided items">
+                <div class="item">
+                    <div class="image">
+                      <img src={{ blog.blog_img.url }}>
                     </div>
-                    <div class="media-body">
-                        <h3>
-                            <a class="media-heading" href="{% url 'blog_detail' blog.id %}">{{ blog.blogTitle }}
-                            </a>
-                        </h3>
-                        <h5>
-                            <span class="glyphicon glyphicon-star" aria-hidden="true">star</span>
-                            <span>阅读数：{{ blog.get_read_num }}</span>
-                            <a href="{% url 'blog_with_type' blog.blogType.id %}">{{ blog.blogType }}
-                            </a>
-                        </h5>
-                        <p>{{ blog.blogContent | truncatechars:30 }}</p>
+                <div class="content">
+                    <a class="header" href="{% url 'blog_detail' blog.id %}">{{ blog.blogTitle }}</a>
+                    <div class="meta">
+                        <span class="cinema">{{ blog.blogAuthor }}</span>
+                    </div>
+                    <div class="description">
+                        <p>{{ blog.blogContent  | truncatechars:30}}</p>
+                    </div>
+                    <div class="extra">
+                        <div class="ui label" href="{% url 'blog_with_type' blog.blogType.id %}">{{ blog.blogType }}</div>
+                        <div class="ui label"><i class="globe icon"></i> 阅读数：{{ blog.get_read_num }}</div>
                     </div>
                 </div>
+              </div>
+            </div>
+            <h4 class="ui red horizontal divider header">
+                <i class="user  icon"></i>
+            </h4>
                     {% empty %}
                        <p>暂无博客，敬请期待</p>
                     {% endfor %}
-
-{#                <ul>#}
-{#                    {% for blog in pageBlogs %}#}
-{#                    <li>#}
-{#                        <a>{{ blog.blog_createdTime | date:"Y-m-d " }}</a>#}
-{#                        <a href="{% url 'blog_detail' blog.id %}">{{ blog.blogTitle }}</a>#}
-{#                        <a href="{% url 'blog_with_type' blog.blogType.id %}">{{ blog.blogType }}</a>#}
-{#                        <a>{{ blog.blogContent | truncatechars:30 }}</a>#}
-{#                    </li>#}
-{##}
-{#                    {% empty %}#}
-{#                       <p>暂无博客，敬请期待</p>#}
-{#                    {% endfor %}#}
-{#                </ul>#}
         </div>
-            <div class="col-md-2">
-{#                <div>博客分类#}
-{#                {% for name in right_typeNames %}#}
-{#                   <a href="{% url 'blog_with_type' name.id %}">{{ name.typeName }} ({{ name.typeCount }})</a>#}
-{#                {% endfor %}#}
-{#                </div>#}
+                {#分页#}
+        <div class="ui segment">
+            <div class="ui pagination menu">
+                    {% if pageBlogs.has_previous %}
+                <a class="active item" href="?page={{ pageBlogs.previous_page_number }}">
+                    <span> << </span>
+                    {% endif %}
+                </a>
 
-                <div class="list-group">
-                    <a href="#" class="list-group-item active">
-                        标签栏
-                    </a>
-                        {% for name in right_typeNames %}
-                    <a class="list-group-item" href="{% url 'blog_with_type' name.id %}">{{ name.typeName }} ({{ name.typeCount }})
-                    </a>
-                        {% endfor %}
-                </div>
+                    {% if pageBlogs.paginator.num_pages > 4 %}
+                <a class=" active item" href="?page=1">1</a>
+                <a class=" active item" href="?page=2">2</a>
+                <a class=" active item" href="?page=3">3</a>
+                    {% endif %}
 
-                <div class="list-group">
-                    <a href="#" class="list-group-item active">
-                        日期归档
-                    </a>
-                        {% for date,count in blog_dates.items %}
-                    <a class="list-group-item" href="{% url 'blog_with_date' date.year date.month %}">{{ date | date:"Y年m月"}} ({{ count }})
-                    </a>
-                        {% endfor %}
-                </div>
+                <a class="item" href="?page={{ pageBlogs.number }}">
+                      {{ pageBlogs.number }}
+                </a>
 
+                    {% if pageBlogs.has_next %}
+                <a class="active item" href="?page={{ pageBlogs.next_page_number }}">
+                    <span> >> </span>
+                    {% endif %}
+                </a>
+                <a class="item">
+                    共 {{ pageBlogs.paginator.num_pages }} 页
+                </a>
 
 
             </div>
@@ -84,57 +72,82 @@
     </div>
 
 
+    <div class="four wide column">
+        <div class="ui segment">
+{#            卡片组#}
+            <div class="ui cards">
+              <div class="card">
+                <div class="content">
+                  <img class="right floated mini ui image" src="../images/avatar/large/elliot.jpg">
+                  <div class="header">
+                    Elliot Fu
+                  </div>
+                  <div class="meta">
+                    Friends of Veronika
+                  </div>
+                  <div class="description">
+                    Elliot requested permission to view your contact details
+                  </div>
+                    <div class="description">
+                    近7日阅读量：{{ read_seven_sums }}
+                    热门博客：{{ hot_blogs }}
+                  </div>
+                </div>
+                <div class="extra content">
+                  <div class="ui two buttons">
+                    <div class="ui basic green button">Approve</div>
+                    <div class="ui basic red button">Decline</div>
+                  </div>
+                </div>
+              </div>
+            </div>
 
+{#        ==========#}
+        <div class="ui top attached menu">
+        <a class="active item">Active Item</a>
+        <a class="item">Item</a>
+        <a class="item">Item</a>
+      </div>
+            {% for hot_blog in hot_blogs %}
+        <div class="ui bottom attached segment">
+            {{ hot_blog.content_object.blogTitle }} ({{ hot_blog.read_num }})
+        </div>
+            {% endfor %}
+{#        ==========#}
 
-
-    <div class="col-md-offset-2">
-        <nav aria-label="Page navigation">
-            <ul class="pagination">
-                <li>
-                {% if pageBlogs.has_previous %}
-                    <a href="?page={{ pageBlogs.previous_page_number }}" aria-label="Previous">
-                    <span aria-hidden="true"> << </span>
-                    {% endif %}
+            {#            右侧栏分隔符#}
+                <div class="ui hidden divider"></div>
+            {#            右侧栏分隔符#}
+            <div>
+                <h4 class="ui top attached inverted header">标签栏</h4>
+                    {% for name in right_typeNames %}
+                <div class="ui bottom attached segment">
+                    <a href="{% url 'blog_with_type' name.id %}">
+                        {{ name.typeName }} ({{ name.typeCount }})
                     </a>
-                </li>
-
-                {% if pageBlogs.number != 1  %}
-                <li><a href="?page=1">1</a></li>
-                    {% endif %}
-
-                <li><a href="?page={{ pageBlogs.number }}"> {{ pageBlogs.number }} </a> </li>
-                <li><a href="#">共 {{ pageBlogs.paginator.num_pages }} 页</a></li>
-
-                    {% if pageBlogs.has_next %}
-                <li>
-                  <a href="?page={{ pageBlogs.next_page_number }}" aria-label="Next">
-                    <span aria-hidden="true"> >> </span>
-                  </a>
-                </li>
-                  {% endif %}
-            </ul>
-        </nav>
+                </div>
+                    {% endfor %}
+            </div>
+            {#            右侧栏分隔符#}
+                <div class="ui hidden divider"></div>
+            {#            右侧栏分隔符#}
+            <div>
+                <h4 class="ui top attached inverted header">日期归档</h4>
+                    {% for date,count in blog_dates.items %}
+                <div class="ui bottom attached segment">
+                    <a href="{% url 'blog_with_date' date.year date.month %}">
+                        {{ date | date:"Y年m月"}} ({{ count }})
+                    </a>
+                </div>
+                    {% endfor %}
+            </div>
+        </div>
     </div>
-{##}
-{#<div>#}
-{#    {% if pageBlogs.number != 1  %}#}
-{#    <a href="?page=1">1</a>#}
-{#    {% endif %}#}
-{##}
-{#    {% if pageBlogs.has_previous %}#}
-{#    <a href="?page={{ pageBlogs.previous_page_number }}"> << </a>#}
-{#    {% endif %}#}
-{##}
-{##}
-{#    <a href="?page={{ pageBlogs.number }}"> {{ pageBlogs.number }}  </a>#}
-{##}
-{##}
-{#    {% if pageBlogs.has_next %}#}
-{#    <a href="?page={{ pageBlogs.next_page_number }}"> >> </a>#}
-{#    {% endif %}#}
-{#    <a>共 {{ pageBlogs.paginator.num_pages }} 页</a>#}
-{##}
-{#</div>#}
+    <div class="one wide column">
+    </div>
+
+</div>
+
 
 
 {% endblock %}

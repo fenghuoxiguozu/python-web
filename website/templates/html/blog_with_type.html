@@ -20,7 +20,7 @@
         <a>创作时间：{{ blog.blog_createdTime | date:"Y-m-d " }}</a>
         <a href="{% url 'blog_detail' blog.id %}">{{ blog.blogTitle }}</a>
 {#        <a ></a>#}
-        <a>{{ blog.blogContent | truncatechars:30 }}</a>
+        <a>内容：{{ blog.blogContent | truncatechars:30 }}</a>
     </li>
 
     {% empty %}

@@ -1,7 +1,11 @@
-from django.shortcuts import render,get_object_or_404,render_to_response
+from django.shortcuts import render,get_object_or_404
 from .models import *
 from django.core.paginator import Paginator
 from django.db.models import Count
+from django.contrib.contenttypes.models import ContentType
+from .util import *
+from comment.models import Comment
+
 
 
 def sidebar(request):
@@ -31,7 +35,12 @@ def blog_list(request):
     context=sidebar(request)    #右侧分类标签
     context['Blogs'] = Blogs    #所有博客
     context['pageBlogs']= Pages(request,Blogs)  #分页博客
-    return render_to_response('blog_list.html',context)
+
+    blog_content_type=ContentType.objects.get_for_model(Blog)
+    context['read_seven_sums']=get_seven_days_readNum(blog_content_type)
+
+    context['hot_blogs'] = get_hot(blog_content_type)
+    return render(request,'blog_list.html',context)
 
 # 分类列表页
 def blog_with_type(request,blogType_id):
@@ -41,7 +50,7 @@ def blog_with_type(request,blogType_id):
     context['blogs'] = Blogs
     context['blog_type']=blogTypes  #分类标题（e.g. django）
     context['pageBlogs'] = Pages(request, Blogs)  # 分页博客
-    return render_to_response('blog_with_type.html', context)
+    return render(request,'blog_with_type.html', context)
 
 # 日期归档
 def blog_with_date(request,year,month):
@@ -50,21 +59,13 @@ def blog_with_date(request,year,month):
                                  blog_createdTime__month=month)
     context['blogs_with_dates'] =Blogs
     context['pageBlogs'] = Pages(request, Blogs)  # 分页博客
-    return render_to_response('blog_with_data.html',context)
+    return render(request,'blog_with_data.html',context)
 
 
 # 博客详情页
 def blog_detail(request,blog_id):
     blog=get_object_or_404(Blog,id=blog_id)
-
-    if not request.COOKIES.get('blog_%s_read'%blog_id):
-        if readNum.objects.filter(blogName=blog).count():
-            readnum=readNum.objects.get(blogName=blog)
-        else:
-            readnum=readNum(blogName=blog)
-        readnum.read_num += 1
-        readnum.save()
-
+    key=once_read(request,blog)
 
     context = {}
     context['blog']=blog
@@ -72,6 +73,11 @@ def blog_detail(request,blog_id):
     # 上下篇博客筛选
     context['pre_blog']= Blog.objects.filter(blog_createdTime__lt=blog.blog_createdTime).first()
     context['next_blog'] = Blog.objects.filter(blog_createdTime__gt=blog.blog_createdTime).last()
-    response= render_to_response('blog_detail.html', context)
-    response.set_cookie('blog_%s_read'%blog_id,'true')
+
+    blog_content_type=ContentType.objects.get_for_model(blog)
+    context['comments']=Comment.objects.filter(content_type=blog_content_type,object_id=blog_id)
+
+
+    response= render(request,'blog_detail.html', context)
+    response.set_cookie(key,'true')
     return response
