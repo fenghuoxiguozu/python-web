@@ -1,7 +1,8 @@
 from django.shortcuts import render,redirect
 from django.contrib import auth
+from django.contrib.auth.models import User
 from django.urls import reverse
-from .forms import LoginForm
+from .forms import LoginForm,RegisterForm
 
 def index(request):
     return render(request,'index.html')
@@ -28,3 +29,25 @@ def login(request):
     context={}
     context['login_form']=login_form
     return render(request,'login.html',context)
+
+
+def register(request):
+    if request.method=='POST':
+        reg_form=RegisterForm(request.POST)
+        if reg_form.is_valid():
+            username=reg_form.cleaned_data['username']
+            email=reg_form.cleaned_data['email']
+            password=reg_form.cleaned_data['password']
+            # 创建用户
+            user=User.objects.create_user(username,email,password)
+            user.save()
+            # 登录用户
+            user=auth.authenticate(username=username,password=password)
+            auth.login(request,user)
+            return redirect(request.GET.get('from',reverse('home')))
+
+    else:
+        reg_form=RegisterForm()
+    context={}
+    context['reg_form']=reg_form
+    return render(request,'register.html',context)

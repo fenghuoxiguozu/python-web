@@ -58,7 +58,10 @@
                 {% if user.is_authenticated %}
                 <h5>已登录{{ user }}</h5>
                 {% else %}
-                <h5><a href="{% url 'login' %}?from={{ request.get_full_path }}">请先登录</a></h5>
+                <h5>请先
+                    <a href="{% url 'login' %}?from={{ request.get_full_path }}">登录</a>/还没账号
+                    <a href="{% url 'register' %}?from={{ request.get_full_path }}">注册</a>
+                </h5>
                 {% endif %}
 
 {#            评论#}

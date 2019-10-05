@@ -4,149 +4,175 @@
 {% block content %}
 {#{% block title %}我的个人博客{% endblock %}#}
 
-<div class="ui equal width grid">
-    <div class="two wide column">
-    </div>
-    <div class="nine wide column">
-        <div class="ui segment">
-            <div class="ui top attached label">共 {{ Blogs|length }} 篇博客</div>
-                {% for blog in pageBlogs %}
-            <div class="ui divided items">
+<div class="ui two column centered grid">
+    <div class="twelve wide column">
+        <div class="ui menu">
+            <div class="left menu" >
                 <div class="item">
-                    <div class="image">
-                      <img src={{ blog.blog_img.url }}>
-                    </div>
-                <div class="content">
-                    <a class="header" href="{% url 'blog_detail' blog.id %}">{{ blog.blogTitle }}</a>
-                    <div class="meta">
-                        <span class="cinema">{{ blog.blogAuthor }}</span>
-                    </div>
-                    <div class="description">
-                        <p>{{ blog.blogContent  | truncatechars:30}}</p>
-                    </div>
-                    <div class="extra">
-                        <div class="ui label" href="{% url 'blog_with_type' blog.blogType.id %}">{{ blog.blogType }}</div>
-                        <div class="ui label"><i class="globe icon"></i> 阅读数：{{ blog.get_read_num }}</div>
-                    </div>
+                    <i class="bullhorn icon"></i>
                 </div>
-              </div>
             </div>
-            <h4 class="ui red horizontal divider header">
-                <i class="user  icon"></i>
+            <div class="right menu" >
+                <div class="item">
+                    {% if user.is_authenticated %}
+                    <span><i class="user icon"></i>{{ user }}</span>
+                    {% else %}
+                    <span>
+                        <a href="{% url 'login' %}?from={{ request.get_full_path }}">
+                            <i class="user outline icon"></i>登录
+                        </a>
+                    </span>
+                    <span>
+                        <a href="{% url 'register' %}?from={{ request.get_full_path }}">
+                            <i class="user times icon"></i>注册
+                        </a>
+                    </span>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="four column centered row">
+        <div class="eight wide column">
+            <div class="ui segment">
+                <div class="ui top attached label">共 {{ Blogs|length }} 篇博客</div>
+{#            博客列表#}
+                    {% for blog in pageBlogs %}
+                    <div class="ui divided items">
+                        <div class="item">
+                            <div class="image">
+                                <img src={{ blog.blog_img.url }}>
+                            </div>
+                            <div class="content">
+                                <a class="header" href="{% url 'blog_detail' blog.id %}">{{ blog.blogTitle }}</a>
+                                <div class="meta">
+                                    <span class="cinema"><i class="user icon"></i>{{ blog.blogAuthor }}</span>
+                                </div>
+                                <div class="description">
+                                    <p>{{ blog.blogContent  | truncatechars:30}}</p>
+                                </div>
+                                <div class="extra">
+                                    <div class="ui label" href="{% url 'blog_with_type' blog.blogType.id %}"><i class="folder icon"></i>{{ blog.blogType }}</div>
+                                    <div class="ui label"><i class="eye icon"></i> 阅读数：{{ blog.get_read_num }}</div>
+                                    <div class="ui label"><i class="clock icon"></i> 发表时间：{{ blog.blog_createdTime }}</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+              <h4 class="ui  horizontal divider header">
+                <i class="hand point down  icon"></i>
             </h4>
                     {% empty %}
                        <p>暂无博客，敬请期待</p>
                     {% endfor %}
-        </div>
-                {#分页#}
-        <div class="ui segment">
-            <div class="ui pagination menu">
-                    {% if pageBlogs.has_previous %}
-                <a class="active item" href="?page={{ pageBlogs.previous_page_number }}">
+            </div>
+
+{#                                   分页#}
+            <div class="ui segment">
+                <div class="ui pagination menu">
+                        {% if pageBlogs.has_previous %}
+                    <a class="active item" href="?page={{ pageBlogs.previous_page_number }}">
                     <span> << </span>
-                    {% endif %}
-                </a>
+                    </a>
+                        {% endif %}
 
-                    {% if pageBlogs.paginator.num_pages > 4 %}
-                <a class=" active item" href="?page=1">1</a>
-                <a class=" active item" href="?page=2">2</a>
-                <a class=" active item" href="?page=3">3</a>
-                    {% endif %}
+                        {% if pageBlogs.paginator.num_pages > 4 %}
+                    <a class=" active item" href="?page=1">1</a>
+                    <a class=" active item" href="?page=2">2</a>
+                    <a class=" active item" href="?page=3">3</a>
+                        {% endif %}
 
-                <a class="item" href="?page={{ pageBlogs.number }}">
-                      {{ pageBlogs.number }}
-                </a>
+                    <a class="item" href="?page={{ pageBlogs.number }}">
+                          {{ pageBlogs.number }}
+                    </a>
 
-                    {% if pageBlogs.has_next %}
-                <a class="active item" href="?page={{ pageBlogs.next_page_number }}">
+                        {% if pageBlogs.has_next %}
+                    <a class="active item" href="?page={{ pageBlogs.next_page_number }}">
                     <span> >> </span>
-                    {% endif %}
-                </a>
-                <a class="item">
-                    共 {{ pageBlogs.paginator.num_pages }} 页
-                </a>
+                        {% endif %}
+                    </a>
 
-
-            </div>
-        </div>
-    </div>
-
-
-    <div class="four wide column">
-        <div class="ui segment">
-{#            卡片组#}
-            <div class="ui cards">
-              <div class="card">
-                <div class="content">
-                  <img class="right floated mini ui image" src="../images/avatar/large/elliot.jpg">
-                  <div class="header">
-                    Elliot Fu
-                  </div>
-                  <div class="meta">
-                    Friends of Veronika
-                  </div>
-                  <div class="description">
-                    Elliot requested permission to view your contact details
-                  </div>
-                    <div class="description">
-                    近7日阅读量：{{ read_seven_sums }}
-                    热门博客：{{ hot_blogs }}
-                  </div>
-                </div>
-                <div class="extra content">
-                  <div class="ui two buttons">
-                    <div class="ui basic green button">Approve</div>
-                    <div class="ui basic red button">Decline</div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-{#        ==========#}
-        <div class="ui top attached menu">
-        <a class="active item">Active Item</a>
-        <a class="item">Item</a>
-        <a class="item">Item</a>
-      </div>
-            {% for hot_blog in hot_blogs %}
-        <div class="ui bottom attached segment">
-            {{ hot_blog.content_object.blogTitle }} ({{ hot_blog.read_num }})
-        </div>
-            {% endfor %}
-{#        ==========#}
-
-            {#            右侧栏分隔符#}
-                <div class="ui hidden divider"></div>
-            {#            右侧栏分隔符#}
-            <div>
-                <h4 class="ui top attached inverted header">标签栏</h4>
-                    {% for name in right_typeNames %}
-                <div class="ui bottom attached segment">
-                    <a href="{% url 'blog_with_type' name.id %}">
-                        {{ name.typeName }} ({{ name.typeCount }})
+                    <a class="item">
+                        共 {{ pageBlogs.paginator.num_pages }} 页
                     </a>
                 </div>
-                    {% endfor %}
             </div>
-            {#            右侧栏分隔符#}
-                <div class="ui hidden divider"></div>
-            {#            右侧栏分隔符#}
-            <div>
-                <h4 class="ui top attached inverted header">日期归档</h4>
-                    {% for date,count in blog_dates.items %}
-                <div class="ui bottom attached segment">
-                    <a href="{% url 'blog_with_date' date.year date.month %}">
-                        {{ date | date:"Y年m月"}} ({{ count }})
-                    </a>
+         </div>
+
+{#    右侧标签栏#}
+        <div class="four wide column">
+            <div class="ui segment">
+    {#            卡片组#}
+                <div class="ui cards">
+                  <div class="card">
+                    <div class="content">
+                      <img class="right floated mini ui image" src="../images/avatar/large/elliot.jpg">
+                      <div class="header">
+                        Elliot Fu
+                      </div>
+                      <div class="meta">
+                        Friends of Veronika
+                      </div>
+                      <div class="description">
+                        Elliot requested permission to view your contact details
+                      </div>
+                        <div class="description">
+                        近7日阅读量：{{ read_seven_sums }}
+                        热门博客：{{ hot_blogs }}
+                      </div>
+                    </div>
+                    <div class="extra content">
+                      <div class="ui two buttons">
+                        <div class="ui basic green button">Approve</div>
+                        <div class="ui basic red button">Decline</div>
+                      </div>
+                    </div>
+                  </div>
                 </div>
+
+{#        ====热门博客======#}
+
+{#            {% for hot_blog in hot_blogs %}#}
+{#        <div class="ui bottom attached segment">#}
+{#            {{ hot_blog.content_object.blogTitle }} ({{ hot_blog.read_num }})#}
+{#        </div>#}
+{#            {% endfor %}#}
+{#        ==========#}
+
+{#              标签云#}
+                <div class="ui segment">
+                    <h4 class="ui top attached inverted header">标签云</h4>
+                    <div class="ui inverted divider"></div>
+                            {% for name in right_typeNames %}
+                        <a class="ui red tag label" href="{% url 'blog_with_type' name.id %}">
+                            {{ name.typeName }} ({{ name.typeCount }})
+                        </a>
+                        {% endfor %}
+                </div>
+
+{#              日期归档#}
+                <div class="ui segment">
+                    <h4 class="ui top attached inverted header">日期归档</h4>
+                        {% for date,count in blog_dates.items %}
+                    <div class="ui bottom attached segment">
+                        <a href="{% url 'blog_with_date' date.year date.month %}">
+                            {{ date | date:"Y年m月"}} ({{ count }})
+                        </a>
+                    </div>
                     {% endfor %}
-            </div>
+                </div>
+
+
         </div>
+
     </div>
-    <div class="one wide column">
+{#    <div class="two wide column">#}
+{#    </div>#}
+
     </div>
 
-</div>
 
 
 

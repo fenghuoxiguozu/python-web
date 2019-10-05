@@ -9,39 +9,22 @@
     <script src="{% static 'js/semantic.js' %}"></script>
 </head>
 
-<body>
+<body style="background-color:gainsboro">
 
 <div class="ui menu">
     <div class="header item">烽火戏国足</div>
     <a class="active item">链接</a>
 
-
     <div class="right menu">
-        <div class="item">
-        {% if user.is_authenticated %}
-            <h5>{{ user }},你好</h5>
-        {% else %}
-            <h5>
-                <a href="{% url 'login' %}?from={{ request.get_full_path }}">登录</a>
-            </h5>
-        {% endif %}
-        </div>
         <div class="item">
             <div class="ui action left icon input">
                 <i class="search icon"></i>
                 <input type="text" placeholder="搜索">
-                <button class="ui button">提交</button>
+                <button class="ui button">搜索</button>
             </div>
         </div>
-{#    #}
     </div>
 </div>
-
-
- <div class="ui hidden divider"></div>
- <div class="ui hidden divider"></div>
- <div class="ui hidden divider"></div>
- <div class="ui hidden divider"></div>
 
 
 {% block content %}{% endblock %}
