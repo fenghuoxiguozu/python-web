@@ -111,13 +111,13 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'zh-hans'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Asia/Shanghai'
 
 USE_I18N = True
 
 USE_L10N = True
 
-USE_TZ = True
+USE_TZ = False
 
 
 # Static files (CSS, JavaScript, Images)
@@ -134,6 +134,7 @@ MEDIA_ROOT=os.path.join(BASE_DIR,'media')
 # 配置ckeditor
 CKEDITOR_UPLOAD_PATH='upload/'
 
+
 EACH_PAGE_BLOGS_NUMBER=7
 
 CKEDITOR_CONFIGS={
@@ -142,8 +143,8 @@ CKEDITOR_CONFIGS={
         # 使用简体中文
         'language':'zh-cn',
         # 编辑器的宽高请根据你的页面自行设置
-        'width':'1000px',
-        'height':'150px',
+        'width':'700px',
+        'height':'200px',
         'image_previewText':' ',
         'tabSpaces': 4,
         'toolbar': 'Custom',
@@ -155,5 +156,7 @@ CKEDITOR_CONFIGS={
             ['Image', 'Link', 'Unlink'],
             ['Maximize']
         ],
+        'removePlugins':'elementspath',
+        'resize_enable':False,
     }
 }

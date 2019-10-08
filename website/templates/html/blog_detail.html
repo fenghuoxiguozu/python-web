@@ -4,171 +4,128 @@
 {% block content %}
 
 
-<div class="ui breadcrumb">
-  <a class="active section" href="{% url 'blog_list' %}" >主页</a>
-  <div class="divider"> / </div>
-  <div class=" section"><a>{{ blog.blogTitle }}</a></div>
-</div>
-
-<div class="ui equal width grid">
-    <div class="two wide column">
+<div class="ui two column centered grid">
+    <div class="fourteen wide column">
+        <div class="ui breadcrumb">
+          <a class="active section" href="{% url 'blog_list' %}" ><i class="home icon"></i>主页</a>
+          <div class="divider"> / </div>
+          <div class=" section"><a>{{ blog.blogTitle }}</a></div>
+        </div>
     </div>
-    <div class="nine wide column">
-        <div class="rows">
-            <p>
-            {{ blog.blogTitle }}
-            </p>
-        </div>
-        <div class="rows">
-            <div class="ui tertiary segment">
-                <p>
-                    {{ blog.blogContent }}
 
-                </p>
+    <div class="four column centered row">
+        <div class="eight wide column">
+            <div class="ui segment">
+                <h3>{{ blog.blogTitle }}</h3>
+                <div class="ui horizontal divider"></div>
+                <div class="extra">
+                    <span ><i class="folder icon"></i>{{ blog.blogType }}</span>
+                    <span ><i class="eye icon"></i> {{ blog.get_read_num }}</span>
+                    <span ><i class="clock icon"></i>{{ blog.blog_createdTime }}</span>
+                </div>
+                <div class="ui section divider"></div>
+                <p>{{ blog.blogContent |safe }}</p>
             </div>
-        </div>
 
-        <div class="rows">
-            <button class="ui right labeled icon button">
-                        {% if pre_blog %}
-                <a href="{% url "blog_detail" pre_blog.id  %}"><< {{ pre_blog.blogTitle }}
-                    <i class="right chevron icon"></i>
-                        {% else %}
-                    已经是最之前的博客
-                        {% endif %}
+            <div class="ui segment">
+                <div class="ui labeled button" tabindex="0">
+                    <div class="ui red button">
+                        <i class="heart icon"></i> 喜欢
+                    </div>
+                    <a class="ui basic red left pointing label">
+                        1,048
+                    </a>
+                </div>
+                <div class="ui labeled button" tabindex="0">
+                    <div class="ui basic blue button">
+                        <i class="share square icon"></i> 分享
+                    </div>
+                    <a class="ui basic left pointing blue label">
+                        1,048
+                    </a>
+                </div>
+            </div>
 
-                </a>
-            </button>
-
-            <button class="ui right labeled icon button">
-                        {% if next_blog %}
-                <a href="{% url "blog_detail" next_blog.id  %}">{{ next_blog.blogTitle }} >>
-                    <i class="right chevron icon"></i>
-                        {% else %}
-                    已经是最后的博客
-                        {% endif %}
-
-                </a>
-            </button>
-        </div>
-{#评论#}
-        <div class="rows">
-            <div class="ui comments">
-                <h3 class="ui dividing header">Comments </h3>
-                {% if user.is_authenticated %}
-                <h5>已登录{{ user }}</h5>
-                {% else %}
-                <h5>请先
+            <div class="ui segment">
+                <div class="ui comments">
+                    <h3 class="ui dividing header">Comments </h3>
+                        {% if user.is_authenticated %}{{ user }}
+                    <form id="commentAjax" class="ui reply form" action="{% url 'update_comment' %}" method="POST">
+                        {% csrf_token %}
+                        {{ comment_form }}
+                    <span id="error_label"></span>
+                    <input type="submit" value="评论">
+                    <i class="icon edit"></i> Add Reply
+                    </form>
+                        {% else  %}
+                    <h5>请先
                     <a href="{% url 'login' %}?from={{ request.get_full_path }}">登录</a>/还没账号
                     <a href="{% url 'register' %}?from={{ request.get_full_path }}">注册</a>
-                </h5>
-                {% endif %}
+                    </h5>
+                        {% endif %}
 
-{#            评论#}
-            {% for comment in comments %}
-              <div class="comment">
-                <a class="avatar">
-                  <img src="../images/avatar/small/matt.jpg">
-                </a>
-                <div class="content">
-                  <a class="author">{{ comment.commentUser.username }}</a>
-                  <div class="metadata">
-                    <span class="date">{{ comment.commentTime }}</span>
-                  </div>
-                  <div class="text">
-                    {{ comment.commentText }}
-                  </div>
-                  <div class="actions">
-                    <a class="reply">Reply</a>
-                  </div>
                 </div>
-              </div>
-            {% endfor %}
-{#              <div class="comment">#}
-{#                <a class="avatar">#}
-{#                  <img src="../images/avatar/small/elliot.jpg">#}
-{#                </a>#}
-{#                <div class="content">#}
-{#                  <a class="author">Elliot Fu</a>#}
-{#                  <div class="metadata">#}
-{#                    <span class="date">Yesterday at 12:30AM</span>#}
-{#                  </div>#}
-{#                  <div class="text">#}
-{#                    <p>This has been very useful for my research. Thanks as well!</p>#}
-{#                  </div>#}
-{#                  <div class="actions">#}
-{#                    <a class="reply">Reply</a>#}
-{#                  </div>#}
-{#                </div>#}
-{#                <div class="comments">#}
-{#                  <div class="comment">#}
-{#                    <a class="avatar">#}
-{#                      <img src="../images/avatar/small/jenny.jpg">#}
-{#                    </a>#}
-{#                    <div class="content">#}
-{#                      <a class="author">Jenny Hess</a>#}
-{#                      <div class="metadata">#}
-{#                        <span class="date">Just now</span>#}
-{#                      </div>#}
-{#                      <div class="text">#}
-{#                        Elliot you are always so right :)#}
-{#                      </div>#}
-{#                      <div class="actions">#}
-{#                        <a class="reply">Reply</a>#}
-{#                      </div>#}
-{#                    </div>#}
-{#                  </div>#}
-{#                </div>#}
-{#              </div>#}
-{#              <div class="comment">#}
-{#                <a class="avatar">#}
-{#                  <img src="../images/avatar/small/joe.jpg">#}
-{#                </a>#}
-{#                <div class="content">#}
-{#                  <a class="author">Joe Henderson</a>#}
-{#                  <div class="metadata">#}
-{#                    <span class="date">5 days ago</span>#}
-{#                  </div>#}
-{#                  <div class="text">#}
-{#                    Dude, this is awesome. Thanks so much#}
-{#                  </div>#}
-{#                  <div class="actions">#}
-{#                    <a class="reply">Reply</a>#}
-{#                  </div>#}
-{#                </div>#}
-{#              </div>#}
+                <div>
+                        {#            评论#}
+                {% for comment in comments %}
+                  <div id="comment_list">
+{#                    {{ comment.commentUser.username }}#}
+{#                      {{ comment.commentTime }}#}
+{#                      {{ comment.commentText }}#}
 
-              <form class="ui reply form" action="{% url 'update_comment' %}" method="post">
-                  {% csrf_token %}
-                <div class="field">
-                  <textarea name="text"></textarea>
-                    <input type="hidden" name="object_id" value="{{ blog.id }}">
-                    <input type="hidden" name="content_type" value="blog">
+                    <a class="avatar">
+                      <img src="../images/avatar/small/matt.jpg">
+                    </a>
+                    <div class="content">
+                      <a class="author">{{ comment.commentUser.username }}</a>
+                      <div class="metadata">
+                        <span class="date">{{ comment.commentTime | date:"Y-m-d H:i:s" }}</span>
+                      </div>
+                      <div class="text">
+                        {{ comment.commentText |safe }}
+                      </div>
+                      <div class="actions">
+                        <a class="reply">Reply</a>
+                      </div>
+                    </div>
+                  </div>
+                    {% empty %}
+                      暂无评论
+                {% endfor %}
+
                 </div>
-                  <input type="submit" value="评论">
-{#                <div class="ui blue labeled submit icon button">#}
-                  <i class="icon edit"></i> Add Reply
-{#                </div>#}
-              </form>
             </div>
+        </div>
+
+
+        <div class="four wide column">
+            <div class="ui segment">
+                <div class="row">   上一篇：
+                        {% if pre_blog %}
+                    <a href="{% url "blog_detail" pre_blog.id  %}">{{ pre_blog.blogTitle }}
+                        <i class="right chevron icon"></i>
+                        {% else %}
+                        已经是最前了
+                        {% endif %}
+                    </a>
+                </div>
+                <div class="ui horizontal divider"></div>
+                <div class="row">   下一篇：
+                        {% if next_blog %}
+                    <a href="{% url "blog_detail" next_blog.id  %}">{{ next_blog.blogTitle }}
+                        <i class="right chevron icon"></i>
+                            {% else %}
+                        已经到底了
+                            {% endif %}
+                    </a>
+                </div>
+            </div>
+
 
         </div>
 
     </div>
-
-    <div class="four wide column">
-
-    </div>
-    <div class="two wide column">
-
-    </div>
-
-
-
-
-{#<div class="ui text container">#}
-{#    #}
-{#</div>#}
+</div>
 
 
 
@@ -177,4 +134,49 @@
 
 
 
+
+
+
+
+
+
+
+{% endblock %}
+
+{% block script_comment %}
+<script type="text/javascript">
+    $("#commentAjax").submit(function () {
+         //判断多行空行
+        $("#error_label").text("");//清空
+        if(CKEDITOR.instances['id_text'].document.getBody().getText().trim()==''){
+            $("#error_label").text("评论内容不能为空");
+            return false;
+        }
+
+        CKEDITOR.instances['id_text'].updateElement();
+        $.ajax({
+            url:'{% url 'update_comment' %}',
+            type:'POST',
+            data: $(this).serialize(),
+            datatype:"JSON",
+            cache:false,
+            success:function (data) {
+                console.log(data);
+                if (data['status']=='SUCCESS') {
+                    var comment_html = '<div>'+data['username']+'('+data['comment_time']+'):'+data['text']+'<div>';
+                    $("#comment_list").prepend(comment_html);
+                    //清空编辑框的内容
+                    CKEDITOR.instances['id_text'].setData('');
+                }else {
+                    $("#error_label").text(data['message'])
+                }
+            },
+            error:function (xhr) {
+                console.log(xhr);
+            },
+        });
+        return  false;
+    });
+</script>
+    
 {% endblock %}

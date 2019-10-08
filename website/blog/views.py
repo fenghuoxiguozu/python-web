@@ -5,6 +5,7 @@ from django.db.models import Count
 from django.contrib.contenttypes.models import ContentType
 from .util import *
 from comment.models import Comment
+from comment.forms import CommentForm
 
 
 
@@ -77,6 +78,8 @@ def blog_detail(request,blog_id):
     blog_content_type=ContentType.objects.get_for_model(blog)
     context['comments']=Comment.objects.filter(content_type=blog_content_type,object_id=blog_id)
 
+
+    context['comment_form'] = CommentForm(initial={'content_type':blog_content_type.model,'object_id':blog_id})
 
     response= render(request,'blog_detail.html', context)
     response.set_cookie(key,'true')
