@@ -11,7 +11,11 @@
                 <div class="item">
                     <i class="bullhorn icon"></i>
                 </div>
+                <div class="item">
+                    <span>欢迎！！！ 本站使用 Django，semantic 搭建，请多支持 </span>
+                </div>
             </div>
+
             <div class="right menu" >
                 <div class="item">
                     {% if user.is_authenticated %}
@@ -31,10 +35,59 @@
                 </div>
             </div>
         </div>
+
+
+
     </div>
 
     <div class="four column centered row">
         <div class="eight wide column">
+            <div class="ui segment">
+                <div class="ui people shape" >
+                    <div class="sides">
+                        <div class="side">
+                            <div class="ui card">
+{#                                <div class="image">#}
+{#                                  <img src="../../media/blogImage/default.jpg">#}
+{#                                </div>#}
+                                <div class="content">
+                                    <div class="header">斯蒂夫·乔布斯</div>
+                                    <div class="meta">
+                                        <a>熟人</a>
+                                    </div>
+                                <div class="description">斯蒂夫·乔布斯是一个伟大的设计者。</div>
+                                </div>
+                                <div class="extra content">
+                                    <span class="right floated">2014年参加</span>
+                                    <span><i class="user icon"></i>151个朋友</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="side active">
+                            <div class="ui card">
+                                <div class="image">
+{#                                    <img src="../../media/blogImage/default.jpg" style="width: 900px;height: 200px">#}
+                                </div>
+                                <div class="content">
+                                    <a class="header">Stevie Feliciano</a>
+                                    <div class="meta">
+                                    <span class="date">2014年加入<!--/span--></span>
+                                    </div>
+                                    <div class="description">
+                                    Stevie Feliciano是一个生活在纽约的图书馆学家。她喜欢把时间花在读书、跑步和写作上。
+                                    </div>
+                                </div>
+                                <div class="extra content">
+                                    <a><i class="user icon"></i>22个朋友</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+
             <div class="ui segment">
                 <div class="ui top attached label">共 {{ Blogs|length }} 篇博客</div>
 {#            博客列表#}

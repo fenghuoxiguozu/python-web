@@ -47,53 +47,74 @@
             </div>
 
             <div class="ui segment">
-                <div class="ui comments">
-                    <h3 class="ui dividing header">Comments </h3>
-                        {% if user.is_authenticated %}{{ user }}
-                    <form id="commentAjax" class="ui reply form" action="{% url 'update_comment' %}" method="POST">
-                        {% csrf_token %}
-                        {{ comment_form }}
+
+                    {% if user.is_authenticated %}{{ user }}
+                <form id="commentAjax" class="ui reply form" action="{% url 'update_comment' %}" method="POST">
+                    {% csrf_token %}
+                    {{ comment_form }}
                     <span id="error_label"></span>
-                    <input type="submit" value="评论">
-                    <i class="icon edit"></i> Add Reply
-                    </form>
-                        {% else  %}
-                    <h5>请先
-                    <a href="{% url 'login' %}?from={{ request.get_full_path }}">登录</a>/还没账号
-                    <a href="{% url 'register' %}?from={{ request.get_full_path }}">注册</a>
-                    </h5>
-                        {% endif %}
+{#                        <div class="ui blue labeled submit icon button">#}
+                        <input type="submit" value="发表评论"  style="float: right">
 
-                </div>
-                <div>
-                        {#            评论#}
-                {% for comment in comments %}
-                  <div id="comment_list">
-{#                    {{ comment.commentUser.username }}#}
-{#                      {{ comment.commentTime }}#}
-{#                      {{ comment.commentText }}#}
+{#                        </div>#}
+                </form>
+                    {% else  %}
+                <h5>请先
+                    <button class="tiny compact ui button">
+                        <a href="{% url 'login' %}?from={{ request.get_full_path }}" style="color: #1B1C1D ">登录</a>
+                    </button>/ 还没账号?
+                    <button class="tiny compact ui button">
+                        <a href="{% url 'register' %}?from={{ request.get_full_path }}" style="color: #1B1C1D ">注册</a>
+                    </button>
+                </h5>
+                {% endif %}
 
-                    <a class="avatar">
-                      <img src="../images/avatar/small/matt.jpg">
-                    </a>
-                    <div class="content">
-                      <a class="author">{{ comment.commentUser.username }}</a>
-                      <div class="metadata">
-                        <span class="date">{{ comment.commentTime | date:"Y-m-d H:i:s" }}</span>
-                      </div>
-                      <div class="text">
-                        {{ comment.commentText |safe }}
-                      </div>
-                      <div class="actions">
-                        <a class="reply">Reply</a>
-                      </div>
+                <div class="ui comments">
+                    <h3 class="ui dividing header">Comments</h3>
+
+{#                评论内容#}
+                        {% for comment in comments %}
+                    <div class="comment" id="comment_list">
+                        <a class="avatar"><img src="../media/blogImage/head1.jpg"></a>
+                        <div class="content">
+                            <a class="author">{{ comment.commentUser.username }}</a>
+                            <div class="metadata">
+                                <span class="date">{{ comment.commentTime | date:"Y-m-d H:i:s" }}</span>
+                            </div>
+                            <div class="text">
+                                <p>{{ comment.commentText | safe }}</p>
+                            </div>
+                            <div class="actions">
+                                <a class="reply">Reply</a>
+                            </div>
+                        </div>
+                        {% for reply in comment.root_comment.all %}
+                        <div class="comments">
+                            <div class="comment">
+                                <a class="avatar"><img src="../media/blogImage/head2.jpg"></a>
+                                <div class="content">
+                                    <a class="author">{{ reply.commentUser }} </a>
+                                    <div class="metadata">
+                                        <span class="date">{{ reply.commentTime | date:"Y-m-d H:i:s" }}</span>
+                                    </div>
+                                    <div class="text">
+                                        {{ reply.commentText }}
+                                    </div>
+                                    <div class="actions">
+                                        <a class="reply">Reply</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+
                     </div>
-                  </div>
-                    {% empty %}
-                      暂无评论
-                {% endfor %}
+                        {% empty %}
+                              暂无评论
+                        {% endfor %}
 
-                </div>
+            </div>
+
             </div>
         </div>
 
@@ -163,7 +184,7 @@
             success:function (data) {
                 console.log(data);
                 if (data['status']=='SUCCESS') {
-                    var comment_html = '<div>'+data['username']+'('+data['comment_time']+'):'+data['text']+'<div>';
+                    var comment_html = '<div class="comment"><a class="avatar"><img src="../media/blogImage/head1.jpg"></a><div class="content"><a class="author">'+data["username"]+'</a><div class="metadata"><span class="date">'+data["comment_time"]+'</span></div>'+'<div class="text"><p>'+data["text"]+'</p></div></div></div>';
                     $("#comment_list").prepend(comment_html);
                     //清空编辑框的内容
                     CKEDITOR.instances['id_text'].setData('');
