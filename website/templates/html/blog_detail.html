@@ -50,6 +50,10 @@
 
                     {% if user.is_authenticated %}{{ user }}
                 <form id="commentAjax" class="ui reply form" action="{% url 'update_comment' %}" method="POST">
+                    <div id="reply_content_container" style="display:none;">
+                        <p>回复：</p>
+                        <div id="reply_content"></div>
+                    </div>
                     {% csrf_token %}
                     {{ comment_form }}
                     <span id="error_label"></span>
@@ -81,13 +85,14 @@
                             <div class="metadata">
                                 <span class="date">{{ comment.commentTime | date:"Y-m-d H:i:s" }}</span>
                             </div>
-                            <div class="text">
+                            <div class="text" id="comment_{{ comment.id }}">
                                 <p>{{ comment.commentText | safe }}</p>
                             </div>
                             <div class="actions">
-                                <a class="reply">Reply</a>
+                                <a href="javascript:reply({{ comment.id }});" class="reply">Reply</a>
                             </div>
                         </div>
+
                         {% for reply in comment.root_comment.all %}
                         <div class="comments">
                             <div class="comment">
@@ -96,12 +101,13 @@
                                     <a class="author">{{ reply.commentUser }} </a>
                                     <div class="metadata">
                                         <span class="date">{{ reply.commentTime | date:"Y-m-d H:i:s" }}</span>
+                                        <span>回复：{{ reply.commentUser }}</span>
                                     </div>
-                                    <div class="text">
-                                        {{ reply.commentText }}
+                                    <div class="text" id="comment_{{ reply.id }}">
+                                        {{ reply.commentText | safe}}
                                     </div>
                                     <div class="actions">
-                                        <a class="reply">Reply</a>
+                                        <a href="javascript:reply({{ reply.id }});" class="reply">Reply</a>
                                     </div>
                                 </div>
                             </div>
@@ -185,6 +191,13 @@
                 console.log(data);
                 if (data['status']=='SUCCESS') {
                     var comment_html = '<div class="comment"><a class="avatar"><img src="../media/blogImage/head1.jpg"></a><div class="content"><a class="author">'+data["username"]+'</a><div class="metadata"><span class="date">'+data["comment_time"]+'</span></div>'+'<div class="text"><p>'+data["text"]+'</p></div></div></div>';
+                    if($('#reply_comment_id').val()=='0'){
+                        //为0评论，插入评论
+
+                    }else{
+                        //插入回复
+
+                    }
                     $("#comment_list").prepend(comment_html);
                     //清空编辑框的内容
                     CKEDITOR.instances['id_text'].setData('');
@@ -198,6 +211,38 @@
         });
         return  false;
     });
+    
+    function reply(reply_comment_id) {
+        //设置值
+        $('#reply_comment_id').val(reply_comment_id);
+
+        var html= $('#comment_'+reply_comment_id).html();
+        $('#reply_content').html(html);
+        $('#reply_content_container').show();
+
+        $('html').animate({scrollTop:$('#commentAjax').offset().top -60},300,function(){
+           CKEDITOR.instances['id_text'].focus();
+        });
+    }
 </script>
     
 {% endblock %}
+
+
+"""
+'<div class="comment" id="comment_list">
+    <a class="avatar"><img src="../media/blogImage/head1.jpg"></a>
+    <div class="content">
+        <a class="author">'+data['username']+'</a>
+        <div class="metadata">
+            <span class="date">'+data['commentTime']+'</span>
+        </div>
+        <div class="text" id="comment_'+data['id']+'">
+            <p>'+data['commentText']+'</p>
+        </div>
+        <div class="actions">
+            <a href="javascript:reply('+data['id']+');" class="reply">Reply</a>
+        </div>
+    </div>'
+
+"""

@@ -43,46 +43,14 @@
     <div class="four column centered row">
         <div class="eight wide column">
             <div class="ui segment">
-                <div class="ui people shape" >
-                    <div class="sides">
-                        <div class="side">
-                            <div class="ui card">
-{#                                <div class="image">#}
-{#                                  <img src="../../media/blogImage/default.jpg">#}
-{#                                </div>#}
-                                <div class="content">
-                                    <div class="header">斯蒂夫·乔布斯</div>
-                                    <div class="meta">
-                                        <a>熟人</a>
-                                    </div>
-                                <div class="description">斯蒂夫·乔布斯是一个伟大的设计者。</div>
-                                </div>
-                                <div class="extra content">
-                                    <span class="right floated">2014年参加</span>
-                                    <span><i class="user icon"></i>151个朋友</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="side active">
-                            <div class="ui card">
-                                <div class="image">
-{#                                    <img src="../../media/blogImage/default.jpg" style="width: 900px;height: 200px">#}
-                                </div>
-                                <div class="content">
-                                    <a class="header">Stevie Feliciano</a>
-                                    <div class="meta">
-                                    <span class="date">2014年加入<!--/span--></span>
-                                    </div>
-                                    <div class="description">
-                                    Stevie Feliciano是一个生活在纽约的图书馆学家。她喜欢把时间花在读书、跑步和写作上。
-                                    </div>
-                                </div>
-                                <div class="extra content">
-                                    <a><i class="user icon"></i>22个朋友</a>
-                                </div>
-                            </div>
-                        </div>
+                <div class="ui segments" >
+
+                    {% for hot_blog in hot_blogs %}
+                    <div class="ui segment" >
+                        {{ hot_blog.content_object.blogTitle }} ({{ hot_blog.read_num }})
                     </div>
+                    {% endfor %}
+
                 </div>
 
             </div>
@@ -173,7 +141,7 @@
                       </div>
                         <div class="description">
                         近7日阅读量：{{ read_seven_sums }}
-                        热门博客：{{ hot_blogs }}
+{#                        热门博客：{{ hot_blogs }}#}
                       </div>
                     </div>
                     <div class="extra content">

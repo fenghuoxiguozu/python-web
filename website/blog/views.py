@@ -79,7 +79,7 @@ def blog_detail(request,blog_id):
     context['comments']=Comment.objects.filter(content_type=blog_content_type,object_id=blog_id,parent=None)
 
 
-    context['comment_form'] = CommentForm(initial={'content_type':blog_content_type.model,'object_id':blog_id})
+    context['comment_form'] = CommentForm(initial={'content_type':blog_content_type.model,'object_id':blog_id,'reply_comment_id':0})
 
     response= render(request,'blog_detail.html', context)
     response.set_cookie(key,'true')
