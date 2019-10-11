@@ -1,5 +1,7 @@
 {% extends 'index.html' %}
 
+
+{% load comment_tags %} }}
 {% block title %}我的个人博客{% endblock %}
 {% block content %}
 
@@ -77,6 +79,7 @@
                                     <div class="ui label" href="{% url 'blog_with_type' blog.blogType.id %}"><i class="folder icon"></i>{{ blog.blogType }}</div>
                                     <div class="ui label"><i class="eye icon"></i> 阅读数：{{ blog.get_read_num }}</div>
                                     <div class="ui label"><i class="clock icon"></i> 发表时间：{{ blog.blog_createdTime }}</div>
+                                    <div class="ui label"><i class="clock icon"></i> 发表时间：{% get_commemt_count blog %}</div>
                                 </div>
                             </div>
                         </div>

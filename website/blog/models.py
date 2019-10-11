@@ -15,10 +15,10 @@ class BlogType(models.Model):
 class Blog(models.Model,readNumMethod):
     blogTitle=models.CharField(max_length=30)
     blogContent=RichTextUploadingField()
-    blogAuthor=models.ForeignKey(User,on_delete=models.DO_NOTHING)
+    blogAuthor=models.ForeignKey(User,on_delete=models.CASCADE)
     blog_createdTime=models.DateTimeField(auto_now_add=True)
     blog_updatedTime=models.DateTimeField(auto_now=True)
-    blogType=models.ForeignKey(BlogType,on_delete=models.DO_NOTHING)
+    blogType=models.ForeignKey(BlogType,on_delete=models.CASCADE)
     blog_img=models.ImageField(upload_to="blogImage",default='blogImage/default.jpg')
 
     def __str__(self):

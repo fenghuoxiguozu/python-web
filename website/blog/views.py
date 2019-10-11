@@ -2,10 +2,8 @@ from django.shortcuts import render,get_object_or_404
 from .models import *
 from django.core.paginator import Paginator
 from django.db.models import Count
-from django.contrib.contenttypes.models import ContentType
 from .util import *
-from comment.models import Comment
-from comment.forms import CommentForm
+
 
 
 
@@ -75,11 +73,6 @@ def blog_detail(request,blog_id):
     context['pre_blog']= Blog.objects.filter(blog_createdTime__lt=blog.blog_createdTime).first()
     context['next_blog'] = Blog.objects.filter(blog_createdTime__gt=blog.blog_createdTime).last()
 
-    blog_content_type=ContentType.objects.get_for_model(blog)
-    context['comments']=Comment.objects.filter(content_type=blog_content_type,object_id=blog_id,parent=None)
-
-
-    context['comment_form'] = CommentForm(initial={'content_type':blog_content_type.model,'object_id':blog_id,'reply_comment_id':0})
 
     response= render(request,'blog_detail.html', context)
     response.set_cookie(key,'true')

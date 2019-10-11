@@ -1,6 +1,7 @@
 {% extends 'index.html' %}
 {% block title %}{{ blog.blogTitle }}{% endblock %}
 
+{% load comment_tags %} }}
 {% block content %}
 
 
@@ -22,14 +23,16 @@
                     <span ><i class="folder icon"></i>{{ blog.blogType }}</span>
                     <span ><i class="eye icon"></i> {{ blog.get_read_num }}</span>
                     <span ><i class="clock icon"></i>{{ blog.blog_createdTime }}</span>
+                    <span ><i class="eye icon"></i>{% get_commemt_count blog %}</span>
                 </div>
                 <div class="ui section divider"></div>
                 <p>{{ blog.blogContent |safe }}</p>
             </div>
 
+{#        点赞#}
             <div class="ui segment">
                 <div class="ui labeled button" tabindex="0">
-                    <div class="ui red button">
+                    <div class="ui red button" onclick="likeChange()">
                         <i class="heart icon"></i> 喜欢
                     </div>
                     <a class="ui basic red left pointing label">
@@ -55,7 +58,11 @@
                         <div id="reply_content"></div>
                     </div>
                     {% csrf_token %}
-                    {{ comment_form }}
+                    {% get_comment_form blog as comment_form  %}
+                    {% for field in comment_form %}
+                        {{ field }}
+                    {% endfor %}
+
                     <span id="error_label"></span>
 {#                        <div class="ui blue labeled submit icon button">#}
                         <input type="submit" value="发表评论"  style="float: right">
@@ -77,6 +84,7 @@
                     <h3 class="ui dividing header">Comments</h3>
 
 {#                评论内容#}
+                        {% get_comment_list blog as comments%}
                         {% for comment in comments %}
                     <div class="comment" id="comment_list">
                         <a class="avatar"><img src="../media/blogImage/head1.jpg"></a>
@@ -224,25 +232,25 @@
            CKEDITOR.instances['id_text'].focus();
         });
     }
+
+    function likeChange(){
+        $.ajax({
+            url:"{% url 'like_change' %}",
+            type:'GET',
+            data:{
+                content_type:'',
+                object_id:''
+            },
+            cache:false,
+            success:,
+            error:function (xhr) {
+
+            },
+        });
+
+    }
 </script>
     
 {% endblock %}
 
 
-"""
-'<div class="comment" id="comment_list">
-    <a class="avatar"><img src="../media/blogImage/head1.jpg"></a>
-    <div class="content">
-        <a class="author">'+data['username']+'</a>
-        <div class="metadata">
-            <span class="date">'+data['commentTime']+'</span>
-        </div>
-        <div class="text" id="comment_'+data['id']+'">
-            <p>'+data['commentText']+'</p>
-        </div>
-        <div class="actions">
-            <a href="javascript:reply('+data['id']+');" class="reply">Reply</a>
-        </div>
-    </div>'
-
-"""
