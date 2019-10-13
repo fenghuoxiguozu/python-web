@@ -9,15 +9,16 @@
 <div class="ui two column centered grid">
     <div class="twelve wide column">
         <div class="ui menu">
-            <div class="left menu" >
-                <div class="item">
+                {% verbatim %}
+            <div class="left menu" id="app">
+                <div class="item" v-on:click="run">
                     <i class="bullhorn icon"></i>
                 </div>
-                <div class="item">
-                    <span>欢迎！！！ 本站使用 Django，semantic 搭建，请多支持 </span>
+                <div class="item" >
+                    <span >{{ msg }} </span>
                 </div>
             </div>
-
+                {% endverbatim %}
             <div class="right menu" >
                 <div class="item">
                     {% if user.is_authenticated %}
@@ -57,41 +58,45 @@
 
             </div>
 
-
             <div class="ui segment">
                 <div class="ui top attached label">共 {{ Blogs|length }} 篇博客</div>
-{#            博客列表#}
+            </div>
+
+        {#            博客列表#}
                     {% for blog in pageBlogs %}
-                    <div class="ui divided items">
-                        <div class="item">
-                            <div class="image">
-                                <img src={{ blog.blog_img.url }}>
+            <div class="ui segment">
+                <div class="ui divided items">
+                    <div class="item">
+                        <div class="image">
+                            <img src={{ blog.blog_img.url }}>
+                        </div>
+                        <div class="content">
+                            <a class="header" href="{% url 'blog_detail' blog.id %}">{{ blog.blogTitle }}</a>
+                            <div class="meta">
+                                <span class="cinema"><i class="user icon"></i>{{ blog.blogAuthor }}</span>
                             </div>
-                            <div class="content">
-                                <a class="header" href="{% url 'blog_detail' blog.id %}">{{ blog.blogTitle }}</a>
-                                <div class="meta">
-                                    <span class="cinema"><i class="user icon"></i>{{ blog.blogAuthor }}</span>
-                                </div>
-                                <div class="description">
-                                    <p>{{ blog.blogContent  | truncatechars:30}}</p>
-                                </div>
-                                <div class="extra">
-                                    <div class="ui label" href="{% url 'blog_with_type' blog.blogType.id %}"><i class="folder icon"></i>{{ blog.blogType }}</div>
-                                    <div class="ui label"><i class="eye icon"></i> 阅读数：{{ blog.get_read_num }}</div>
-                                    <div class="ui label"><i class="clock icon"></i> 发表时间：{{ blog.blog_createdTime }}</div>
-                                    <div class="ui label"><i class="clock icon"></i> 发表时间：{% get_commemt_count blog %}</div>
-                                </div>
+                            <div class="description">
+                                <p>{{ blog.blogContent  | truncatechars:30}}</p>
+                            </div>
+                            <div class="extra">
+                                <div class="ui label" href="{% url 'blog_with_type' blog.blogType.id %}"><i class="folder icon"></i>{{ blog.blogType }}</div>
+                                <div class="ui label"><i class="eye icon"></i> 阅读数：{{ blog.get_read_num }}</div>
+                                <div class="ui label"><i class="clock icon"></i> 发表时间：{{ blog.blog_createdTime }}</div>
+                                <div class="ui label"><i class="clock icon"></i> 发表时间：{% get_commemt_count blog %}</div>
                             </div>
                         </div>
                     </div>
+                </div>
 
-              <h4 class="ui  horizontal divider header">
-                <i class="hand point down  icon"></i>
-            </h4>
-                    {% empty %}
+{#              <h4 class="ui  horizontal divider header">#}
+{#                <i class="hand point down  icon"></i>#}
+{#            </h4>#}
+
+        </div>
+                        {% empty %}
                        <p>暂无博客，敬请期待</p>
                     {% endfor %}
-            </div>
+
 
 {#                                   分页#}
             <div class="ui segment">
@@ -169,6 +174,7 @@
                 <div class="ui segment">
                     <h4 class="ui top attached inverted header">标签云</h4>
                     <div class="ui inverted divider"></div>
+
                             {% for name in right_typeNames %}
                         <a class="ui red tag label" href="{% url 'blog_with_type' name.id %}">
                             {{ name.typeName }} ({{ name.typeCount }})
@@ -196,14 +202,35 @@
 {#    </div>#}
 
     </div>
-
-
+</div>
 
 
 {% endblock %}
 
+{% block script_scroll %}
+<script>
+    var vue=new Vue({
+        el:'#app',
+        data:{
+            msg:'欢迎！！！ 本站使用 Django,semantic,Vue 搭建，请多支持',
+            is_Interval:false,
+        },
+        methods:{
+            run(){
+                if(this.is_Interval!=false) return;
+                this.is_Interval=setInterval( () =>{
+                    var start = this.msg.substring(0, 1);
+                    var end = this.msg.substring(1);
+                    this.msg = end  +start;
+                    console.log(this.msg);
+                },200 )}
+        }
+    })
 
 
+</script>
+
+{% endblock %}
 
 
 

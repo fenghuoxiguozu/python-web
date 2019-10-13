@@ -32,7 +32,8 @@
 {#        点赞#}
             <div class="ui segment">
                 <div class="ui labeled button" tabindex="0">
-                    <div class="ui red button" onclick="likeChange()">
+                    <div class="ui red button" >
+{#                        onclick="likeChange('blog',{{ blog.id }})"#}
                         <i class="heart icon"></i> 喜欢
                     </div>
                     <a class="ui basic red left pointing label">
@@ -233,22 +234,26 @@
         });
     }
 
-    function likeChange(){
-        $.ajax({
-            url:"{% url 'like_change' %}",
-            type:'GET',
-            data:{
-                content_type:'',
-                object_id:''
-            },
-            cache:false,
-            success:,
-            error:function (xhr) {
-
-            },
-        });
-
-    }
+    {#function likeChange(obj,content_type,object_id){#}
+    {#    var is_like= obj.getElementsByClassName('active').length ==0;#}
+    {#    $.ajax({#}
+    {#        url:"{% url 'like_change' %}",#}
+    {#        type:'GET',#}
+    {#        data:{#}
+    {#            content_type:'content_type',#}
+    {#            object_id:'object_id',#}
+    {#            is_like:is_like#}
+    {#        },#}
+    {#        cache:false,#}
+    {#        success:{#}
+    {##}
+    {#        },#}
+    {#        error:function (xhr) {#}
+    {##}
+    {#        },#}
+    {#    });#}
+    {##}
+    {#}#}
 </script>
     
 {% endblock %}
