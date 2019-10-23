@@ -2,7 +2,9 @@ from django.db import models
 from django.contrib.auth.models import User
 from ckeditor_uploader.fields import RichTextUploadingField
 from django.contrib.contenttypes.models import ContentType
-from read_record.models import readNumMethod
+from django.contrib.contenttypes.fields import GenericRelation
+from read_record.models import readNumMethod,readDetail
+
 
 # 博客分类
 class BlogType(models.Model):
@@ -20,6 +22,7 @@ class Blog(models.Model,readNumMethod):
     blog_updatedTime=models.DateTimeField(auto_now=True)
     blogType=models.ForeignKey(BlogType,on_delete=models.CASCADE)
     blog_img=models.ImageField(upload_to="blogImage",default='blogImage/default.jpg')
+    read_details=GenericRelation(readDetail)
 
     def __str__(self):
         return "<Blog:%s>"%self.blogTitle

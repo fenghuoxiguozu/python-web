@@ -20,10 +20,21 @@
             </div>
                 {% endverbatim %}
             <div class="right menu" >
-                <div class="item">
                     {% if user.is_authenticated %}
-                    <span><i class="user icon"></i>{{ user }}</span>
+                    <div class="ui dropdown item" id="dropdown">
+                        <span><i class="user icon"></i>{{ user }}</span>
+                        <i class="dropdown icon"></i>
+                        <div class="menu" data-filtered="filtered">
+                            <a class="item">个人信息</a>
+                            <a class="item">注销</a>
+{#                            <a class="item">西班牙语</a>#}
+                        </div>
+                    </div>
+
+
                     {% else %}
+
+
                     <span>
                         <a href="{% url 'login' %}?from={{ request.get_full_path }}">
                             <i class="user outline icon"></i>登录
@@ -35,64 +46,87 @@
                         </a>
                     </span>
                     {% endif %}
-                </div>
             </div>
         </div>
-
-
-
     </div>
 
     <div class="four column centered row">
         <div class="eight wide column">
-            <div class="ui segment">
-                <div class="ui segments" >
-
-                    {% for hot_blog in hot_blogs %}
-                    <div class="ui segment" >
-                        {{ hot_blog.content_object.blogTitle }} ({{ hot_blog.read_num }})
+{#        7日热门博客排行（按阅读数）#}
+            <div class="ui grey segment">hello
+                <div class="swiper-container">uu
+                    <div class="swiper-wrapper">ee
+                        <div class="swiper-slide slide-1">rt
+                            <div class="full preload middle"><img data-src="../media/blogImage/head1.jpg" class="swiper-lazy"><div class="swiper-lazy-preloader swiper-lazy-preloader-white"></div></div>
+                        </div>
+                        <div class="swiper-slide slide-2">dsa
+                            <div class="homepage-left100"><span class="txt">Why<br>All The<br> Baggage?</span></div>
+                            <div class="full preload middle"><img data-src="../media/blogImage/head2.jpg" class="swiper-lazy"><div class="swiper-lazy-preloader swiper-lazy-preloader-white"></div></div>
+                        </div>
+                        <div class="swiper-slide slide-3">
+                            <div class="txtCenter"><span class="txt">the DAM<br>tRUth</span></div>
+                            <div class="full preload middle"><img data-src="../media/blogImage/default.jpg" class="swiper-lazy"><div class="swiper-lazy-preloader swiper-lazy-preloader-white"></div></div>
+                        </div>
+                        <div class="swiper-slide slide-4">
+                            <div class="whiteTxt"><span class="txt">Our mussels cultivate<br>a cleaner ocean.</span></div>
+                            <div class="full preload middle"><img data-src="../media/blogImage/04.jpg" class="swiper-lazy"><div class="swiper-lazy-preloader swiper-lazy-preloader-white"></div></div>
+                        </div>
                     </div>
-                    {% endfor %}
-
+                    <div class="swiper-pagination"></div>
+                    <div class="swiper-button-prev swiper-button-white"></div><!--左箭头-->
+                    <div class="swiper-button-next swiper-button-white"></div><!--右箭头-->
                 </div>
 
-            </div>
 
-            <div class="ui segment">
+
+
+
+{#                <h4 class="ui horizontal divider header">近七日阅读量</h4>#}
+{#                <div class="ui large aligned animated relaxed list">#}
+{#                    {% for hot_blog in hot_blogs %}#}
+{#                    <div class="item">#}
+{#                        <div class="content">#}
+{#                            <a href="{%  url 'blog_detail' hot_blog.id %}">#}
+{#                                <i class="hotjar icon"></i>{{ hot_blog.blogTitle }}#}
+{#                            </a>#}
+{#                            <a style="float: right">#}
+{#                                <span class="ui label">{{ hot_blog.seven_hot_blogs }}</span>#}
+{#                            </a>#}
+{#                        </div>#}
+{#                    </div>#}
+{#                    {% endfor %}#}
+{#                </div>#}
+            </div>
+{#        所有博客数量统计  #}
+            <div class="ui segment" style="margin-bottom: -15px">
                 <div class="ui top attached label">共 {{ Blogs|length }} 篇博客</div>
             </div>
 
         {#            博客列表#}
                     {% for blog in pageBlogs %}
-            <div class="ui segment">
+            <div class="ui raised segment">
                 <div class="ui divided items">
+                    <a class="ui blue ribbon label" href="{% url 'blog_with_type' blog.blogType.id %}">{{ blog.blogType }}</a>
+                    <a class="header" href="{% url 'blog_detail' blog.id %}" style="color: #0e8c8c;font: 300 18px 微软雅黑">{{ blog.blogTitle }}</a>
                     <div class="item">
+{#                        <a class="header" href="{% url 'blog_detail' blog.id %}">{{ blog.blogTitle }}</a>#}
                         <div class="image">
                             <img src={{ blog.blog_img.url }}>
                         </div>
                         <div class="content">
-                            <a class="header" href="{% url 'blog_detail' blog.id %}">{{ blog.blogTitle }}</a>
-                            <div class="meta">
-                                <span class="cinema"><i class="user icon"></i>{{ blog.blogAuthor }}</span>
-                            </div>
                             <div class="description">
-                                <p>{{ blog.blogContent  | truncatechars:30}}</p>
+                                <span>{{ blog.blogContent  | truncatechars:120}}</span>
                             </div>
-                            <div class="extra">
-                                <div class="ui label" href="{% url 'blog_with_type' blog.blogType.id %}"><i class="folder icon"></i>{{ blog.blogType }}</div>
-                                <div class="ui label"><i class="eye icon"></i> 阅读数：{{ blog.get_read_num }}</div>
-                                <div class="ui label"><i class="clock icon"></i> 发表时间：{{ blog.blog_createdTime }}</div>
-                                <div class="ui label"><i class="clock icon"></i> 发表时间：{% get_commemt_count blog %}</div>
+                            <div class="extra" style="margin-top:30px ">
+                                <span class="cinema"><i class="user icon"></i>{{ blog.blogAuthor }}</span>
+                                <span class="cinema"><i class="eye icon"></i> 阅读数：{{ blog.get_read_num }}</span>
+                                <span class="cinema"><i class="clock icon"></i> {{ blog.blog_createdTime }}</span>
+                                <span class="cinema"><i class="comments icon"></i> 发表时间：{% get_commemt_count blog %}</span>
                             </div>
                         </div>
                     </div>
                 </div>
-
-{#              <h4 class="ui  horizontal divider header">#}
-{#                <i class="hand point down  icon"></i>#}
-{#            </h4>#}
-
-        </div>
+            </div>
                         {% empty %}
                        <p>暂无博客，敬请期待</p>
                     {% endfor %}
@@ -111,6 +145,7 @@
                     <a class=" active item" href="?page=1">1</a>
                     <a class=" active item" href="?page=2">2</a>
                     <a class=" active item" href="?page=3">3</a>
+                    <a class=" disabled item" >...</a>
                         {% endif %}
 
                     <a class="item" href="?page={{ pageBlogs.number }}">
@@ -131,73 +166,73 @@
          </div>
 
 {#    右侧标签栏#}
-        <div class="four wide column">
-            <div class="ui segment">
-    {#            卡片组#}
-                <div class="ui cards">
-                  <div class="card">
+    <div class="four wide column">
+{#    卡片组，今天阅读量#}
+        <div class="ui segment">
+            <div class="ui cards">
+                <div class="card">
                     <div class="content">
-                      <img class="right floated mini ui image" src="../images/avatar/large/elliot.jpg">
-                      <div class="header">
-                        Elliot Fu
-                      </div>
-                      <div class="meta">
-                        Friends of Veronika
-                      </div>
-                      <div class="description">
-                        Elliot requested permission to view your contact details
-                      </div>
+                        <div class="ui small circular rotate reveal image" style="float: right">
+                            <img src="../media/blogImage/head1.jpg" class="visible content">
+                            <img src="../media/blogImage/head2.jpg" class="hidden content">
+                        </div>
+                        <div class="header">
+                            Bin Lu
+                        </div>
+                        <div class="meta">
+                            Friends of Veronika
+                        </div>
                         <div class="description">
-                        近7日阅读量：{{ read_seven_sums }}
-{#                        热门博客：{{ hot_blogs }}#}
-                      </div>
+                            今日阅读量：{{ todays_readNum.read_num_sums }}
+                        </div>
                     </div>
-                    <div class="extra content">
-                      <div class="ui two buttons">
-                        <div class="ui basic green button">Approve</div>
-                        <div class="ui basic red button">Decline</div>
-                      </div>
+                <div class="extra content">
+                    <div class="ui two buttons">
+                        <div class="ui basic green button"><i class="github icon"></i></div>
+                        <div class="ui basic red button"><i class="github icon"></i></div>
                     </div>
-                  </div>
                 </div>
-
-{#        ====热门博客======#}
-
-{#            {% for hot_blog in hot_blogs %}#}
-{#        <div class="ui bottom attached segment">#}
-{#            {{ hot_blog.content_object.blogTitle }} ({{ hot_blog.read_num }})#}
-{#        </div>#}
-{#            {% endfor %}#}
-{#        ==========#}
-
-{#              标签云#}
-                <div class="ui segment">
-                    <h4 class="ui top attached inverted header">标签云</h4>
-                    <div class="ui inverted divider"></div>
-
-                            {% for name in right_typeNames %}
-                        <a class="ui red tag label" href="{% url 'blog_with_type' name.id %}">
-                            {{ name.typeName }} ({{ name.typeCount }})
-                        </a>
-                        {% endfor %}
-                </div>
-
-{#              日期归档#}
-                <div class="ui segment">
-                    <h4 class="ui top attached inverted header">日期归档</h4>
-                        {% for date,count in blog_dates.items %}
-                    <div class="ui bottom attached segment">
-                        <a href="{% url 'blog_with_date' date.year date.month %}">
-                            {{ date | date:"Y年m月"}} ({{ count }})
-                        </a>
-                    </div>
-                    {% endfor %}
-                </div>
-
-
+            </div>
         </div>
 
+
+{#              标签云#}
+        <div class="ui segment">
+            <h4 class="ui top attached inverted header">标签云</h4>
+            <div class="ui inverted divider"></div>
+                {% for name in right_typeNames %}
+                        {% if name.id == 2 or name.id == 5 or name.id == 8 or name.id == 11 %}
+                <a class="ui red tag label" href="{% url 'blog_with_type' name.id %}" style="margin: 15px 25px">
+                   {{ name.typeName }}({{ name.typeCount }})
+                </a>
+                        {% elif name.id == 1 or name.id == 4 or name.id == 7  %}
+                <a class="ui teal tag label" href="{% url 'blog_with_type' name.id %}">
+                   {{ name.typeName }}({{ name.typeCount }})
+                </a>
+                        {% else  %}
+                <a class="ui blue tag label" href="{% url 'blog_with_type' name.id %}">
+                   {{ name.typeName }}({{ name.typeCount }})
+                </a>
+                        {% endif %}
+                {% endfor %}
+        </div>
+
+{#              日期归档#}
+        <div class="ui segment">
+            <h4 class="ui top attached inverted header">日期归档</h4>
+                {% for date,count in blog_dates.items %}
+            <div class="ui bottom attached segment">
+                <a href="{% url 'blog_with_date' date.year date.month %}">
+                    {{ date | date:"Y年m月"}} ({{ count }})
+                </a>
+            </div>
+            {% endfor %}
+        </div>
+
+
     </div>
+
+</div>
 {#    <div class="two wide column">#}
 {#    </div>#}
 
@@ -209,6 +244,12 @@
 
 {% block script_scroll %}
 <script>
+    $('.dropdown')
+    .dropdown({
+    // you can use any ui transition
+    transition: 'drop'
+  });
+
     var vue=new Vue({
         el:'#app',
         data:{
@@ -227,6 +268,54 @@
         }
     })
 
+
+
+var swiper = new Swiper('.swiper-container', {
+        loop: true,
+		lazy: {
+            //loadPrevNext: true,
+        },
+		navigation: {
+		  nextEl: '.swiper-button-next',
+		  prevEl: '.swiper-button-prev',
+		},
+		pagination: {
+		  el: '.swiper-pagination',
+		},
+    });
+    //0.625   5/8
+    function homeResize() {
+
+    	WinHeight = $(window).height();
+    	WinWidth = $(window).width();
+    	fullBox = $(".swiper-slide .full");
+
+    	if (WinWidth > 768) {
+    		if (WinWidth / WinHeight > 1.6) {
+    			fullBox.width("100%").height(WinWidth * 0.625).css({
+					"position": 'absolute',
+    				"left": "0px",
+    				"top": (WinHeight - fullBox.height()) / 2 + "px"
+    			});
+    		} else {
+    			fullBox.width(WinHeight * 1.6).height("100%").css({
+					"position": 'absolute',
+    				"left": "-" + (fullBox.width() - WinWidth) / 2 + "px",
+    				"top": "0px"
+    			});
+    		}
+    	} else {
+    		fullBox.width("100%").height("auto").css({
+    			"position": 'static',
+    		});
+    	}
+    }
+
+    homeResize();
+
+    $(window).resize(function() {
+    	homeResize();
+    });
 
 </script>
 

@@ -36,9 +36,8 @@ def blog_list(request):
     context['pageBlogs']= Pages(request,Blogs)  #分页博客
 
     blog_content_type=ContentType.objects.get_for_model(Blog)
-    context['read_seven_sums']=get_seven_days_readNum(blog_content_type)
-
-    context['hot_blogs'] = get_hot(blog_content_type)
+    context['todays_readNum']=get_todays_readNum(blog_content_type)
+    context['hot_blogs'] = get_7days_hot_blogs()
     return render(request,'blog_list.html',context)
 
 # 分类列表页

@@ -4,8 +4,11 @@
 <head>
     <meta charset="UTF-8">
     <title>{% block title %}{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'css/swiper.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
     <link rel="stylesheet" href="{% static 'css/semantic.css' %}">
     <script src="{% static 'js/jquery-3.2.1.min.js' %}"></script>
+    <script src="{% static 'js/swiper.min.js' %}"></script>
     <script src="{% static 'js/semantic.js' %}"></script>
 <script src="{% static 'js/vue.js' %}"></script>
     <script type="text/javascript" src="{% static "ckeditor/ckeditor-init.js" %}"></script>
@@ -15,8 +18,15 @@
 <body style="background-color:gainsboro">
 
 <div class="ui menu">
-    <div class="header item">烽火戏国足</div>
+    <div class="header item">
+        <div class="ui small circular rotate reveal image">
+            <img src="../images/wireframe/square-image.png" class="visible content">
+            <img src="../images/avatar/large/stevie.jpg" class="hidden content">
+        </div>
+    </div>
     <a class="active item" href="{% url 'blog_list' %}">首页</a>
+    <a class="active item" href="{% url 'blog_list' %}">杂谈</a>
+    <a class="active item" href="{% url 'blog_list' %}">留言板</a>
 
     <div class="right menu">
         <div class="item">
@@ -36,6 +46,37 @@
 
 
 
+
+
+
+
+
+<!-- Swiper -->
+
+
+
+
+<!-- Initialize Swiper -->
+<script>
+
+</script>
+
+
+
+
+
+
+
+
+{#<script>#}
+{#    function too(){#}
+{#      $('.shape').shape('flip left');#}
+{#    }#}
+{#    function right(){#}
+{#      $('.shape').shape('flip right');#}
+{#    }#}
+{##}
+{#</script>#}
 
 </body>
 </html>
