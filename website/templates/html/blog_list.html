@@ -1,7 +1,9 @@
 {% extends 'index.html' %}
 
 
-{% load comment_tags %} }}
+{% load comment_tags %}
+{% load like_tags %}
+
 {% block title %}我的个人博客{% endblock %}
 {% block content %}
 
@@ -35,16 +37,7 @@
                     {% else %}
 
 
-                    <span>
-                        <a href="{% url 'login' %}?from={{ request.get_full_path }}">
-                            <i class="user outline icon"></i>登录
-                        </a>
-                    </span>
-                    <span>
-                        <a href="{% url 'register' %}?from={{ request.get_full_path }}">
-                            <i class="user times icon"></i>注册
-                        </a>
-                    </span>
+
                     {% endif %}
             </div>
         </div>
@@ -54,28 +47,7 @@
         <div class="eight wide column">
 {#        7日热门博客排行（按阅读数）#}
             <div class="ui grey segment">hello
-                <div class="swiper-container">uu
-                    <div class="swiper-wrapper">ee
-                        <div class="swiper-slide slide-1">rt
-                            <div class="full preload middle"><img data-src="../media/blogImage/head1.jpg" class="swiper-lazy"><div class="swiper-lazy-preloader swiper-lazy-preloader-white"></div></div>
-                        </div>
-                        <div class="swiper-slide slide-2">dsa
-                            <div class="homepage-left100"><span class="txt">Why<br>All The<br> Baggage?</span></div>
-                            <div class="full preload middle"><img data-src="../media/blogImage/head2.jpg" class="swiper-lazy"><div class="swiper-lazy-preloader swiper-lazy-preloader-white"></div></div>
-                        </div>
-                        <div class="swiper-slide slide-3">
-                            <div class="txtCenter"><span class="txt">the DAM<br>tRUth</span></div>
-                            <div class="full preload middle"><img data-src="../media/blogImage/default.jpg" class="swiper-lazy"><div class="swiper-lazy-preloader swiper-lazy-preloader-white"></div></div>
-                        </div>
-                        <div class="swiper-slide slide-4">
-                            <div class="whiteTxt"><span class="txt">Our mussels cultivate<br>a cleaner ocean.</span></div>
-                            <div class="full preload middle"><img data-src="../media/blogImage/04.jpg" class="swiper-lazy"><div class="swiper-lazy-preloader swiper-lazy-preloader-white"></div></div>
-                        </div>
-                    </div>
-                    <div class="swiper-pagination"></div>
-                    <div class="swiper-button-prev swiper-button-white"></div><!--左箭头-->
-                    <div class="swiper-button-next swiper-button-white"></div><!--右箭头-->
-                </div>
+
 
 
 
@@ -119,9 +91,10 @@
                             </div>
                             <div class="extra" style="margin-top:30px ">
                                 <span class="cinema"><i class="user icon"></i>{{ blog.blogAuthor }}</span>
-                                <span class="cinema"><i class="eye icon"></i> 阅读数：{{ blog.get_read_num }}</span>
+                                <span class="cinema"><i class="eye icon"></i> {{ blog.get_read_num }}</span>
+                                <span class="cinema"><i class="heart icon"></i> {% get_like_count blog %}</span>
                                 <span class="cinema"><i class="clock icon"></i> {{ blog.blog_createdTime }}</span>
-                                <span class="cinema"><i class="comments icon"></i> 发表时间：{% get_commemt_count blog %}</span>
+                                <span class="cinema"><i class="comments icon"></i> {% get_commemt_count blog %}</span>
                             </div>
                         </div>
                     </div>
@@ -243,79 +216,45 @@
 {% endblock %}
 
 {% block script_scroll %}
-<script>
-    $('.dropdown')
-    .dropdown({
-    // you can use any ui transition
-    transition: 'drop'
-  });
+<script >
+  {#  $('.dropdown')#}
+  {#  .dropdown({#}
+  {#  // you can use any ui transition#}
+  {#  transition: 'drop'#}
+  {#{);#}
+    
+    windows.onload=function () {
+        var msg = '欢迎！！！ 本站使用 Django,semantic,Vue 搭建，请多支持';
+        {#if(this.is_Interval!=false) return;#}
+        {#        this.is_Interval=setInterval( () =>{#}
+        var start = msg.substring(0, 1);
+        var end = msg.substring(1);
+        msgs = end + start;
+        console.log(msgs);
+        {#{,200 )};#}
+    };
 
-    var vue=new Vue({
-        el:'#app',
-        data:{
-            msg:'欢迎！！！ 本站使用 Django,semantic,Vue 搭建，请多支持',
-            is_Interval:false,
-        },
-        methods:{
-            run(){
-                if(this.is_Interval!=false) return;
-                this.is_Interval=setInterval( () =>{
-                    var start = this.msg.substring(0, 1);
-                    var end = this.msg.substring(1);
-                    this.msg = end  +start;
-                    console.log(this.msg);
-                },200 )}
-        }
-    })
+    {#var vue=new Vue({#}
+    {#    el:'#app',#}
+    {#    data:{#}
+    {#        msg:'欢迎！！！ 本站使用 Django,semantic,Vue 搭建，请多支持',#}
+    {#        is_Interval:false,#}
+    {#    },#}
+    {#    methods:{#}
+    {#        run(){#}
+    {#            if(this.is_Interval!=false) return;#}
+    {#            this.is_Interval=setInterval( () =>{#}
+    {#                var start = this.msg.substring(0, 1);#}
+    {#                var end = this.msg.substring(1);#}
+    {#                this.msg = end  +start;#}
+    {#                console.log(this.msg);#}
+    {#            },200 )}#}
+    {#    }#}
+    {#{)#}
 
 
 
-var swiper = new Swiper('.swiper-container', {
-        loop: true,
-		lazy: {
-            //loadPrevNext: true,
-        },
-		navigation: {
-		  nextEl: '.swiper-button-next',
-		  prevEl: '.swiper-button-prev',
-		},
-		pagination: {
-		  el: '.swiper-pagination',
-		},
-    });
-    //0.625   5/8
-    function homeResize() {
 
-    	WinHeight = $(window).height();
-    	WinWidth = $(window).width();
-    	fullBox = $(".swiper-slide .full");
-
-    	if (WinWidth > 768) {
-    		if (WinWidth / WinHeight > 1.6) {
-    			fullBox.width("100%").height(WinWidth * 0.625).css({
-					"position": 'absolute',
-    				"left": "0px",
-    				"top": (WinHeight - fullBox.height()) / 2 + "px"
-    			});
-    		} else {
-    			fullBox.width(WinHeight * 1.6).height("100%").css({
-					"position": 'absolute',
-    				"left": "-" + (fullBox.width() - WinWidth) / 2 + "px",
-    				"top": "0px"
-    			});
-    		}
-    	} else {
-    		fullBox.width("100%").height("auto").css({
-    			"position": 'static',
-    		});
-    	}
-    }
-
-    homeResize();
-
-    $(window).resize(function() {
-    	homeResize();
-    });
 
 </script>
 

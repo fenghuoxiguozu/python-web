@@ -1,0 +1,70 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Login</title>
+    <link rel="stylesheet" href="{% static 'css/semantic.css' %}">
+
+     <style type="text/css">
+    body {
+      background-color: #DADADA;
+    }
+    body > .grid {
+      height: 100%;
+    }
+    .image {
+      margin-top: -100px;
+    }
+    .column {
+      max-width: 450px;
+    }
+  </style>
+</head>
+
+<body>
+
+    <div class="ui middle aligned center aligned grid">
+        <div class="column">
+            <h2 class="ui teal image header">
+                <img src="assets/images/logo.png" class="image">
+                <div class="content">
+                    注册
+                </div>
+            </h2>
+            <form class="ui large form" action="{% url 'login' %}" method="POST">
+                <div class="ui stacked segment">
+{#                    {{ form.as_table }}#}
+                    <div class="field">
+                        <div class="ui left icon input">
+                            <i class="user icon"></i>
+                            <input type="text" name="telephone" placeholder="手机号码">
+                        </div>
+                    </div>
+                    <div class="field">
+                        <div class="ui left icon input">
+                            <i class="lock icon"></i>
+                            <input type="password" name="password" placeholder="密码">
+                        </div>
+                    </div>
+                    <div class="field">
+
+{#                            <i class="lock icon"></i>#}
+                            <input type="checkbox" name="remember" >记住我
+
+                    </div>
+                    <input type="submit" class="ui fluid large teal submit button">注册
+                </div>
+
+                <div class="ui error message"></div>
+
+        </form>
+
+        <div class="ui message">
+          新用户？ <a href="#register">注册</a>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

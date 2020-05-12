@@ -2,6 +2,7 @@
 {% block title %}{{ blog.blogTitle }}{% endblock %}
 
 {% load comment_tags %} }}
+{% load like_tags %}
 {% block content %}
 
 
@@ -30,14 +31,14 @@
             </div>
 
 {#        点赞#}
-            <div class="ui segment">
-                <div class="ui labeled button" tabindex="0">
+            <div class="ui segment" style="padding-left: 30%;border:none;background-color: rgba(255,255,255,0.005 );">
+                <div class="ui labeled button" tabindex="0" onclick="likeChange(this,'blog',{{ blog.id }})">
                     <div class="ui red button" >
-{#                        onclick="likeChange('blog',{{ blog.id }})"#}
+                        <span class="youtube {% get_like_status blog %}"></span>
                         <i class="heart icon"></i> 喜欢
                     </div>
                     <a class="ui basic red left pointing label">
-                        1,048
+                        <span class="liked_num">{% get_like_count blog %}</span>
                     </a>
                 </div>
                 <div class="ui labeled button" tabindex="0">
@@ -59,16 +60,17 @@
                         <div id="reply_content"></div>
                     </div>
                     {% csrf_token %}
+                    <div>
                     {% get_comment_form blog as comment_form  %}
                     {% for field in comment_form %}
                         {{ field }}
                     {% endfor %}
+                    </div>
 
-                    <span id="error_label"></span>
-{#                        <div class="ui blue labeled submit icon button">#}
-                        <input type="submit" value="发表评论"  style="float: right">
-
-{#                        </div>#}
+                    <div>
+                        <input type="submit" value="发表评论"  class="ui blue labeled submit icon button" style="height: 50px;width: 300px;margin-top: 30px">
+                        <span id="error_label"></span>
+                    </div>
                 </form>
                     {% else  %}
                 <h5>请先
@@ -81,7 +83,7 @@
                 </h5>
                 {% endif %}
 
-                <div class="ui comments">
+                <div class="ui comments" style="margin-top: 50px">
                     <h3 class="ui dividing header">Comments</h3>
 
 {#                评论内容#}
@@ -234,26 +236,39 @@
         });
     }
 
-    {#function likeChange(obj,content_type,object_id){#}
-    {#    var is_like= obj.getElementsByClassName('active').length ==0;#}
-    {#    $.ajax({#}
-    {#        url:"{% url 'like_change' %}",#}
-    {#        type:'GET',#}
-    {#        data:{#}
-    {#            content_type:'content_type',#}
-    {#            object_id:'object_id',#}
-    {#            is_like:is_like#}
-    {#        },#}
-    {#        cache:false,#}
-    {#        success:{#}
-    {##}
-    {#        },#}
-    {#        error:function (xhr) {#}
-    {##}
-    {#        },#}
-    {#    });#}
-    {##}
-    {#}#}
+    function likeChange(obj,content_type,object_id){
+        var is_like= obj.getElementsByClassName('active').length ==0;
+        $.ajax({
+            url:"{% url 'like_change' %}",
+            type:'GET',
+            data:{
+                content_type:content_type,
+                object_id:object_id,
+                is_like:is_like
+            },
+            cache:false,
+            success:function (datas){
+                console.log(datas);
+                if(datas['status']=='SUCCESS'){
+                    var element= $(obj.getElementsByClassName('youtube'));
+                    if (is_like){
+                        element.addClass('active');
+                    }else {
+                        element.removeClass('active')
+                    }
+                    var liked_num=$(obj.getElementsByClassName('liked_num'));
+                    liked_num.text(datas['liked_num']);}
+                else {
+                    {#alert(datas['message']);#}
+
+                }
+            },
+            error:function (xhr) {
+                console.log(xhr)
+            },
+        });
+
+    }
 </script>
     
 {% endblock %}

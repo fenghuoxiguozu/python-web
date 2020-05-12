@@ -1,0 +1,43 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="{% static 'css/semantic.css' %}">
+    <title>主页</title>
+</head>
+<body>
+
+<div class="ui secondary pointing menu" id="menu">
+    <a class="item active">
+        主页
+    </a>
+  <a class="item">
+    信息
+  </a>
+  <a class="item">
+    朋友
+  </a>
+  <div class="right menu">
+    <a class="ui item">
+      退出
+    </a>
+  </div>
+</div>
+<div class="ui segment">
+  <p></p>
+</div>
+
+</body>
+
+</html>
+
+<script>
+    menu=document.querySelector('#menu').querySelector('a');
+    menu.click=function () {
+        console.log('ok');
+        {#menu.classList.add('active')#}
+
+    }
+
+</script>

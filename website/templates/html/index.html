@@ -4,13 +4,13 @@
 <head>
     <meta charset="UTF-8">
     <title>{% block title %}{% endblock %}</title>
-    <link rel="stylesheet" href="{% static 'css/swiper.min.css' %}">
+{#    <link rel="stylesheet" href="{% static 'css/swiper.min.css' %}">#}
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
     <link rel="stylesheet" href="{% static 'css/semantic.css' %}">
     <script src="{% static 'js/jquery-3.2.1.min.js' %}"></script>
-    <script src="{% static 'js/swiper.min.js' %}"></script>
+{#    <script src="{% static 'js/swiper.min.js' %}"></script>#}
     <script src="{% static 'js/semantic.js' %}"></script>
-<script src="{% static 'js/vue.js' %}"></script>
+{#    <script src="{% static 'js/vue.js' %}"></script>#}
     <script type="text/javascript" src="{% static "ckeditor/ckeditor-init.js" %}"></script>
     <script type="text/javascript" src="{% static "ckeditor/ckeditor/ckeditor.js" %}"></script>
 </head>
@@ -20,13 +20,28 @@
 <div class="ui menu">
     <div class="header item">
         <div class="ui small circular rotate reveal image">
-            <img src="../images/wireframe/square-image.png" class="visible content">
-            <img src="../images/avatar/large/stevie.jpg" class="hidden content">
+            <img src="" class="visible content">
+            <img src="" class="hidden content">
         </div>
     </div>
     <a class="active item" href="{% url 'blog_list' %}">首页</a>
     <a class="active item" href="{% url 'blog_list' %}">杂谈</a>
     <a class="active item" href="{% url 'blog_list' %}">留言板</a>
+
+    <div class="menu" style="margin-left: 50%">
+        {% if user.is_authenticated %}
+        <div class="item" ><h3>{{ user }}</h3></div>
+        {% else %}
+        <div class="item" >
+            <a class="mylogin" href="{% url 'login' %}?from={{ request.get_full_path }}">
+                <i class="user outline icon"></i>登录
+            </a>
+            <a href="{% url 'register' %}?from={{ request.get_full_path }}">
+                <i class="user times icon"></i>注册
+            </a>
+        </div>
+        {% endif %}
+    </div>
 
     <div class="right menu">
         <div class="item">
@@ -40,6 +55,8 @@
 </div>
 
 
+<div class="ui modal"></div>
+
 {% block content %}{% endblock %}
 {% block script_comment %}{% endblock %}
 {% block script_scroll %}{% endblock %}
@@ -51,15 +68,6 @@
 
 
 
-<!-- Swiper -->
-
-
-
-
-<!-- Initialize Swiper -->
-<script>
-
-</script>
 
 
 

@@ -1,11 +1,13 @@
-from django.shortcuts import render,redirect
+ from django.shortcuts import render,redirect
 from django.contrib import auth
 from django.contrib.auth.models import User
 from django.urls import reverse
 from .forms import LoginForm,RegisterForm
+from django.http import JsonResponse,HttpResponse
 
 def index(request):
-    return render(request,'index.html')
+    # return render(request,'index.html')
+    return JsonResponse({"code":"SUCCESS"})
 
 
 def login(request):

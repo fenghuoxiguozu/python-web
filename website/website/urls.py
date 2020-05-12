@@ -19,6 +19,7 @@ from blog.views import *
 from django.conf import settings
 from django.conf.urls.static import  static
 from website.views import login,index,register
+from .views import *
 
 
 
@@ -30,7 +31,7 @@ urlpatterns = [
     path('login/',login,name="login"),
     path('register/',register,name="register"),
     path('comment/',include('comment.urls')),
-    # path('likes/',include('likes.urls')),
+    path('likes/',include('likes.urls')),
 ]
 
 urlpatterns+=static(settings.MEDIA_URL,document_root=settings.MEDIA_ROOT)
